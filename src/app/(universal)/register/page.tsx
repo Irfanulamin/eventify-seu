@@ -1,0 +1,331 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/use-auth";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react";
+import { FieldConfig, LoginForm, RegisterForm } from "@/types/register";
+import Link from "next/link";
+import { CommonNavbar } from "@/components/common/CommonNavbar";
+
+const loginFields: FieldConfig[] = [
+  {
+    name: "emailOrUsername",
+    label: "Email or Username",
+    type: "text",
+    placeholder: "Enter email or username",
+    validation: {
+      required: "Email or username is required",
+      minLength: { value: 3, message: "Must be at least 3 characters" },
+    },
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "password",
+    placeholder: "Enter password",
+    validation: {
+      required: "Password is required",
+      minLength: {
+        value: 6,
+        message: "Password must be at least 6 characters",
+      },
+    },
+    isPassword: true,
+  },
+];
+
+const registerFields: FieldConfig[] = [
+  {
+    name: "username",
+    label: "Username",
+    type: "text",
+    placeholder: "Choose username",
+    validation: {
+      required: "Username is required",
+      minLength: {
+        value: 3,
+        message: "Username must be at least 3 characters",
+      },
+      pattern: {
+        value: /^[a-zA-Z0-9_]+$/,
+        message: "Username can only contain letters, numbers, and underscores",
+      },
+    },
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Enter email",
+    validation: {
+      required: "Email is required",
+      pattern: {
+        value: /^\S+@\S+$/i,
+        message: "Please enter a valid email address",
+      },
+    },
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "password",
+    placeholder: "Create password",
+    validation: {
+      required: "Password is required",
+      minLength: {
+        value: 8,
+        message: "Password must be at least 8 characters",
+      },
+      pattern: {
+        value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
+        message: "Password must contain uppercase, lowercase, and number",
+      },
+    },
+    isPassword: true,
+  },
+];
+
+export default function AuthPage() {
+  const [activeTab, setActiveTab] = useState("register");
+  const [showPasswords, setShowPasswords] = useState<{
+    [key: string]: boolean;
+  }>({});
+  const { isLoading: authLoading, login, register } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const registerForm = useForm<RegisterForm>({
+    mode: "onChange",
+  });
+  const loginForm = useForm<LoginForm>({
+    mode: "onChange",
+  });
+
+  const togglePasswordVisibility = (fieldName: string) => {
+    setShowPasswords((prev) => ({
+      ...prev,
+      [fieldName]: !prev[fieldName],
+    }));
+  };
+
+  const renderField = (field: FieldConfig, form: any, formType: string) => {
+    const fieldId = `${formType}-${field.name}`;
+    const showPassword = showPasswords[fieldId] || false;
+
+    return (
+      <div key={field.name} className="space-y-2">
+        <Label htmlFor={fieldId} className="text-sm text-white/80">
+          {field.label}
+        </Label>
+        <div className="relative">
+          <Input
+            id={fieldId}
+            type={
+              field.isPassword
+                ? showPassword
+                  ? "text"
+                  : "password"
+                : field.type
+            }
+            placeholder={field.placeholder}
+            className="bg-black/50 border-blue-500/30 focus:border-blue-400 text-white placeholder:text-white/50 rounded-xl h-11 px-4 pr-12"
+            {...form.register(field.name, field.validation)}
+          />
+          {field.isPassword && (
+            <button
+              type="button"
+              onClick={() => togglePasswordVisibility(fieldId)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/50 hover:text-white/80"
+            >
+              {showPassword ? (
+                <EyeOff className="w-4 h-4" />
+              ) : (
+                <Eye className="w-4 h-4" />
+              )}
+            </button>
+          )}
+        </div>
+        {form.formState.errors[field.name] && (
+          <p className="text-red-400 text-xs">
+            {form.formState.errors[field.name].message}
+          </p>
+        )}
+      </div>
+    );
+  };
+
+  const onRegisterSubmit = async (data: RegisterForm) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await register(data.username, data.email, data.password);
+      toast.success("Account created successfully! Welcome to Eventify SEU!");
+      registerForm.reset();
+    } catch (err: any) {
+      console.error("Registration failed:", err);
+      const errorMessage =
+        err.response?.data?.message || "Registration failed. Please try again.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const onLoginSubmit = async (data: LoginForm) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await login(data.emailOrUsername, data.password);
+      toast.success("Welcome back! You've been logged in successfully.");
+      loginForm.reset();
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      const errorMessage =
+        err.response?.data?.message ||
+        "Login failed. Please check your credentials.";
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="flex items-center space-x-2 text-white">
+          <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+          <span>Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-black">
+      <div className="absolute inset-0 bg-gradient-to-tl from-blue-950/80 to-black">
+        <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-blue-700/4 rounded-full blur-3xl" />
+      </div>
+      <CommonNavbar />
+
+      <div className="w-full max-w-sm relative">
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="bg-black/80 border border-blue-500/30 mb-4 w-fit rounded-xl p-0.5">
+            <TabsTrigger
+              value="register"
+              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm rounded-lg px-6 py-2"
+            >
+              Register
+            </TabsTrigger>
+            <TabsTrigger
+              value="login"
+              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm rounded-lg px-6 py-2"
+            >
+              Login
+            </TabsTrigger>
+          </TabsList>
+          <Card className="w-full bg-black/90 border border-blue-500/30 shadow-xl rounded-2xl overflow-hidden">
+            <CardContent className="p-6">
+              <div className="text-center space-y-2 mb-6">
+                {activeTab === "login" ? (
+                  <>
+                    <CardTitle className="text-2xl font-semibold text-white">
+                      Welcome Back
+                    </CardTitle>
+                    <CardDescription className="text-white/60 text-sm">
+                      Welcome back to Eventify SEU — log in to stay updated!
+                    </CardDescription>
+                  </>
+                ) : (
+                  <>
+                    <CardTitle className="text-2xl font-semibold text-white">
+                      Create Account
+                    </CardTitle>
+                    <CardDescription className="text-white/60 text-sm">
+                      Join Eventify SEU today — register to never miss an
+                      update!
+                    </CardDescription>
+                  </>
+                )}
+              </div>
+
+              {error && (
+                <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-xl">
+                  <p className="text-red-400 text-sm text-center">{error}</p>
+                </div>
+              )}
+
+              <TabsContent value="login" className="space-y-4 mt-0">
+                <form
+                  onSubmit={loginForm.handleSubmit(onLoginSubmit)}
+                  className="space-y-4"
+                >
+                  {loginFields.map((field) =>
+                    renderField(field, loginForm, "login")
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !loginForm.formState.isValid}
+                    className="w-full bg-blue-700 hover:bg-blue-700 text-white font-medium transition-colors duration-200 rounded-xl h-11 mt-6 disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                        Signing In...
+                      </div>
+                    ) : (
+                      "Sign In"
+                    )}
+                  </Button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="register" className="space-y-4 mt-0">
+                <form
+                  onSubmit={registerForm.handleSubmit(onRegisterSubmit)}
+                  className="space-y-4"
+                >
+                  {registerFields.map((field) =>
+                    renderField(field, registerForm, "register")
+                  )}
+
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !registerForm.formState.isValid}
+                    className="w-full bg-blue-700 hover:bg-blue-700 text-white font-medium transition-colors duration-200 rounded-xl h-11 mt-6 disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <div className="flex items-center justify-center">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
+                        Creating Account...
+                      </div>
+                    ) : (
+                      "Create Account"
+                    )}
+                  </Button>
+                </form>
+              </TabsContent>
+            </CardContent>
+          </Card>
+        </Tabs>
+      </div>
+    </div>
+  );
+}
