@@ -6,25 +6,55 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
+  SheetClose,
 } from "@/components/ui/sheet";
 
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
 
 export const CommonNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+
   const navItems = [
     { type: "link", label: "Home", href: "/" },
-    { type: "link", label: "About", href: "#about" },
-    { type: "link", label: "Mission", href: "#mission" },
+    { type: "link", label: "About", href: "/#about" },
+    { type: "link", label: "Mission", href: "/#mission" },
     { type: "button", label: "Register", href: "/register" },
   ];
+
+  const handleNavClick = (href: string) => {
+    setIsOpen(false);
+
+    if (href.startsWith("/#")) {
+      const id = href.split("#")[1];
+
+      if (window.location.pathname === "/") {
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 300);
+      } else {
+        router.push("/");
+        setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: "smooth" });
+        }, 500);
+      }
+    } else {
+      router.push(href);
+    }
+  };
+
   return (
     <nav className="absolute top-4 md:top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-6xl px-4">
       <div className="bg-gradient-to-r from-black/20 to-blue-900/20 backdrop-blur-md border border-white/5 rounded-full px-8 py-3 md:py-4">
         <div className="flex items-center justify-between">
-          <div className="text-white font-semibold text-lg">Eventify SEU</div>
+          <Link href="/" className="text-white font-semibold text-lg">
+            Eventify SEU
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
@@ -66,42 +96,50 @@ export const CommonNavbar = () => {
             >
               <SheetHeader>
                 <SheetTitle className="text-white text-xl font-semibold">
-                  <div className="text-white font-bold text-2xl tracking-wide">
+                  <Link
+                    href="/"
+                    className="text-white font-bold text-2xl tracking-wide"
+                  >
                     Eventify SEU
-                  </div>
+                  </Link>
                   <p className="text-white/70 font-medium text-sm mt-1">
                     Connect, discover, and experience
                   </p>
                 </SheetTitle>
               </SheetHeader>
 
+              {/* Mobile Links */}
               <div className="flex flex-col space-y-4 mt-8">
                 {navItems
                   .filter((item) => item.type === "link")
                   .map((item) => (
-                    <Link
-                      key={item.label}
-                      href={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="relative group text-lg font-medium py-3 px-4 rounded-xl overflow-hidden border-l-4 border-transparent transition-all duration-300"
-                    >
-                      <span className="absolute inset-0 bg-white/10 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 origin-left"></span>
-                      <span className="relative text-white group-hover:text-blue-400">
-                        {item.label}
-                      </span>
-                    </Link>
+                    <SheetClose asChild key={item.label}>
+                      <button
+                        onClick={() => handleNavClick(item.href)}
+                        className="relative group text-lg font-medium py-3 px-4 rounded-xl overflow-hidden border-l-4 border-transparent transition-all duration-300 text-left"
+                      >
+                        <span className="absolute inset-0 bg-white/10 rounded-xl scale-0 group-hover:scale-100 transition-transform duration-300 origin-left"></span>
+                        <span className="relative text-white group-hover:text-blue-400">
+                          {item.label}
+                        </span>
+                      </button>
+                    </SheetClose>
                   ))}
               </div>
 
+              {/* Mobile Button */}
               <div className="absolute bottom-6 left-6 right-6 flex flex-col gap-3">
                 {navItems
                   .filter((item) => item.type === "button")
                   .map((item) => (
-                    <Link key={item.label} href={item.href}>
-                      <Button onClick={() => setIsOpen(false)}>
+                    <SheetClose asChild key={item.label}>
+                      <Button
+                        className="w-full"
+                        onClick={() => handleNavClick(item.href)}
+                      >
                         {item.label}
                       </Button>
-                    </Link>
+                    </SheetClose>
                   ))}
               </div>
             </SheetContent>

@@ -438,11 +438,15 @@ export default function About() {
             </h3>
             <p className="text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">
               Eventify SEU makes it easy to discover, follow, and join student
-              activities across Southeast University. Don not miss your chance
-              to be part of the action.
+              activities across Southeast University. Don’t miss your chance to
+              be part of the action.
+            </p>
+            <p className="text-gray-400 mb-6 max-w-xl mx-auto text-sm italic">
+              Have a suggestion, feature idea, or review? Share your thoughts
+              with us — your feedback helps shape the future of Eventify SEU.
             </p>
             <Button variant="outline" className="cta-button">
-              Apply Now
+              Leave a Review
             </Button>
           </div>
         </div>

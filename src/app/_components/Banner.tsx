@@ -10,14 +10,14 @@ export default function Banner() {
       {/* Beams Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Beams
-          beamWidth={2}
+          beamWidth={1.5}
           beamHeight={18}
           beamNumber={26}
           lightColor="#0000D0"
           speed={3}
-          noiseIntensity={1.5}
+          noiseIntensity={1}
           scale={0.2}
-          rotation={15}
+          rotation={20}
         />
       </div>
 
@@ -37,7 +37,9 @@ export default function Banner() {
             <Link href="#mission">
               <Button variant="default">Learn More</Button>
             </Link>
-            <Button variant="outline">Register</Button>
+            <Link href="/register">
+              <Button variant="outline">Register</Button>
+            </Link>
           </div>
         </div>
       </div>
