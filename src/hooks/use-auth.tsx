@@ -21,7 +21,7 @@ interface AuthContextType {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  login: (emailOrUsername: string, password: string) => Promise<User>;
+  login: (email: string, password: string) => Promise<User>;
   register: (
     username: string,
     email: string,
@@ -45,8 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAuthStatus = async () => {
     try {
       const response = await api.get("/api/auth/me");
-      if (response.data.user) {
-        setUser(response.data.user);
+      if (response.data.success) {
+        setUser(response.data.data);
       }
     } catch (error) {
       setUser(null);
@@ -59,18 +59,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuthStatus();
   }, []);
 
-  const login = async (
-    emailOrUsername: string,
-    password: string
-  ): Promise<User> => {
+  const login = async (email: string, password: string): Promise<User> => {
     const response = await api.post("/api/auth/login", {
-      emailOrUsername,
-      password,
+      email: email,
+      password: password,
     });
-
-    if (response.data.user) {
-      setUser(response.data.user);
-      return response.data.user;
+    if (response.data.success) {
+      setUser(response.data.data);
+      return response.data.data;
     }
     throw new Error("Login failed");
   };
@@ -85,10 +81,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
     });
-
-    if (response.data.user) {
-      setUser(response.data.user);
-      return response.data.user;
+    if (response.data.success) {
+      setUser(response.data.data);
+      return response.data.data;
     }
     throw new Error("Registration failed");
   };

@@ -5,7 +5,7 @@ interface RegisterForm {
 }
 
 interface LoginForm {
-  emailOrUsername: string;
+  email: string;
   password: string;
 }
 
