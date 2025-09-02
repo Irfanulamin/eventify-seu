@@ -8,7 +8,7 @@ export default function SuperAdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-full bg-gray-50 dark:bg-gray-900 text-black">
+    <div className="flex h-full w-full bg-gray-50 dark:bg-gray-900 text-black">
       <DashboardSidebar />
 
       {/* Main Content */}
@@ -19,7 +19,7 @@ export default function SuperAdminLayout({
           </h1>
         </header>
 
-        <main className="flex-1 p-6">{children}</main>
+        <main className="flex-1 p-6 bg-white">{children}</main>
       </div>
     </div>
   );
