@@ -42,28 +42,32 @@ const defaultNavItems: NavItem[] = [
   },
 ];
 
-export function DashboardSidebar({
+export function SidebarContent({
+  isCollapsed,
+  setIsCollapsed,
   onItemClick,
-  className,
-}: DashboardSidebarProps) {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  isMobile = false,
+  onMobileClose,
+}: {
+  isCollapsed: boolean;
+  setIsCollapsed: (collapsed: boolean) => void;
+  onItemClick?: (itemId: string) => void;
+  isMobile?: boolean;
+  onMobileClose?: () => void;
+}) {
   const pathname = usePathname();
 
   const handleItemClick = (itemId: string) => {
     onItemClick?.(itemId);
+    if (isMobile && onMobileClose) {
+      onMobileClose();
+    }
   };
 
   return (
-    <div
-      className={cn(
-        "relative flex flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50 border-r border-blue-200 dark:border-blue-800 transition-all duration-300",
-        isCollapsed ? "w-16" : "w-64",
-        className
-      )}
-    >
-      {/* Header */}
+    <>
       <div className="flex items-center justify-between p-4 border-b border-blue-200 dark:border-blue-800">
-        {!isCollapsed && (
+        {(!isCollapsed || isMobile) && (
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 bg-white rounded-sm" />
@@ -73,23 +77,25 @@ export function DashboardSidebar({
             </span>
           </div>
         )}
-        <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-1.5 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
-        >
-          {isCollapsed ? (
-            <ChevronRight className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          ) : (
-            <ChevronLeft className="w-4 h-4 text-blue-600 dark:text-blue-400" />
-          )}
-        </button>
+        {!isMobile && (
+          <button
+            onClick={() => setIsCollapsed(!isCollapsed)}
+            className="p-1.5 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+          >
+            {isCollapsed ? (
+              <ChevronRight className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            ) : (
+              <ChevronLeft className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {defaultNavItems.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname.startsWith(item.href); // automatically active
+          const isActive = pathname.startsWith(item.href);
 
           return (
             <Link key={item.id} href={item.href} className="block">
@@ -100,7 +106,7 @@ export function DashboardSidebar({
                   isActive
                     ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
                     : "text-blue-700 dark:text-blue-300 hover:bg-blue-200/70 dark:hover:bg-blue-800/50",
-                  isCollapsed && "justify-center px-2"
+                  !isMobile && isCollapsed && "justify-center px-2"
                 )}
               >
                 <Icon
@@ -110,7 +116,7 @@ export function DashboardSidebar({
                   )}
                 />
 
-                {!isCollapsed && (
+                {(!isCollapsed || isMobile) && (
                   <>
                     <span className="font-medium text-sm text-balance">
                       {item.label}
@@ -130,8 +136,8 @@ export function DashboardSidebar({
                   </>
                 )}
 
-                {/* Tooltip for collapsed state */}
-                {isCollapsed && (
+                {/* Tooltip for collapsed state - only on desktop */}
+                {!isMobile && isCollapsed && (
                   <div className="absolute left-full ml-2 px-2 py-1 bg-blue-900 dark:bg-blue-100 text-white dark:text-blue-900 text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                     {item.label}
                     {item.badge && (
@@ -149,7 +155,7 @@ export function DashboardSidebar({
 
       {/* Footer */}
       <div className="p-4 border-t border-blue-200 dark:border-blue-800">
-        {!isCollapsed ? (
+        {!isCollapsed || isMobile ? (
           <div className="flex items-center space-x-3 p-3 rounded-xl bg-blue-100 dark:bg-blue-900/50">
             <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">JD</span>
@@ -171,6 +177,31 @@ export function DashboardSidebar({
           </div>
         )}
       </div>
-    </div>
+    </>
+  );
+}
+
+export function DashboardSidebar({
+  onItemClick,
+  className,
+}: DashboardSidebarProps) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  return (
+    <>
+      <div
+        className={cn(
+          "hidden md:flex relative flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50 border-r border-blue-200 dark:border-blue-800 transition-all duration-300",
+          isCollapsed ? "w-16" : "w-64",
+          className
+        )}
+      >
+        <SidebarContent
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+          onItemClick={onItemClick}
+        />
+      </div>
+    </>
   );
 }

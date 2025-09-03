@@ -23,7 +23,7 @@ export default function UserNavbar() {
     },
     {
       href: "/request",
-      label: "Requst & Feedback",
+      label: "Request & Feedback",
     },
   ];
   const pathname = usePathname();
@@ -57,7 +57,7 @@ export default function UserNavbar() {
                 : cn(
                     "backdrop-blur-md border border-white/20 hover:border-white/30",
                     isActive
-                      ? "bg-gradient-to-r from-white/30 to-white/20 text-white border-white/50"
+                      ? "bg-gradient-to-r from-blue-400/30 to-blue-700/20 text-white border-blue-900/50"
                       : "text-white/90 hover:bg-white/15 hover:text-white"
                   )
             )}
@@ -70,7 +70,7 @@ export default function UserNavbar() {
   );
 
   return (
-    <nav className="flex justify-between items-center p-6 mx-4 mt-4 rounded-2xl bg-gradient-to-r from-slate-900/40 via-blue-900/30 to-purple-900/40 backdrop-blur-xl shadow-2xl border border-white/20 overflow-hidden">
+    <nav className="flex justify-between items-center p-6 mx-4 mt-4 rounded-2xl bg-slate-900 shadow border border-white/20 overflow-hidden">
       <div>
         <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
           Eventify SEU
@@ -87,9 +87,9 @@ export default function UserNavbar() {
           <Button
             onClick={() => logout()}
             variant="destructive"
-            className="group  overflow-hidden bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 border-0 shadow-xl transition-all duration-200"
+            className="group  overflow-hidden bg-red-700 border-0 shadow-xl transition-all duration-200"
           >
-            <LogOut className="w-4 h-4 mr-2 " />
+            <LogOut className="w-4 h-4" />
             <span className=" font-semibold">Log Out</span>
           </Button>
         </div>
@@ -108,7 +108,7 @@ export default function UserNavbar() {
           </SheetTrigger>
           <SheetContent
             side="right"
-            className="w-80 p-6 bg-gradient-to-br from-slate-900/95 via-blue-900/90 to-purple-900/95 backdrop-blur-2xl border-l border-white/20"
+            className="w-80 p-6 bg-slate-950 border-l border-white/20"
           >
             <SheetHeader className="pb-6">
               <SheetTitle className="flex items-center gap-4 text-white">
@@ -127,7 +127,7 @@ export default function UserNavbar() {
               <div className="mt-8 pt-6 border-t border-white/20">
                 <Button
                   variant="destructive"
-                  className="w-full justify-start gap-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 border-0 transition-colors duration-200"
+                  className="w-full justify-start gap-3 bg-red-700 border-0 transition-colors duration-200"
                   onClick={() => {
                     setIsOpen(false);
                     logout();

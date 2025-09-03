@@ -1,20 +1,13 @@
 "use client";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Users, Sparkles } from "lucide-react";
+import useViewport from "@/utils/view_port";
+import { Users } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState, useEffect, useMemo } from "react";
 
 const Chart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
   loading: () => (
-    <div className="h-[350px] flex items-center justify-center">
+    <div className="h-[250px] sm:h-[350px] flex items-center justify-center">
       <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
     </div>
   ),
@@ -50,6 +43,7 @@ const clubData = {
 };
 
 export default function Dashboard() {
+  const [width] = useViewport();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -92,7 +86,7 @@ export default function Dashboard() {
     () => ({
       chart: {
         type: "area" as const,
-        height: 350,
+        height: width < 640 ? 250 : 350, // Responsive height
         background: "transparent",
         toolbar: { show: false },
         animations: { enabled: true, easing: "easeinout", speed: 300 },
@@ -111,20 +105,26 @@ export default function Dashboard() {
       grid: { borderColor: "#e0e7ff", strokeDashArray: 3 },
       xaxis: {
         categories: clubData.ClubsActivity.map((club) => club.displayName),
-        labels: { style: { colors: "#3b82f6", fontSize: "12px" }, rotate: -45 },
+        labels: {
+          style: {
+            colors: "#3b82f6",
+            fontSize: width < 640 ? "10px" : "12px",
+          }, // Smaller font on mobile
+          rotate: width < 640 ? -90 : -45, // More rotation on mobile for better fit
+        },
       },
       yaxis: { labels: { style: { colors: "#3b82f6" } } },
       tooltip: { theme: "light", style: { fontSize: "12px" } },
       dataLabels: { enabled: false },
     }),
-    []
+    [width]
   );
 
   const popularityChartOptions = useMemo(
     () => ({
       chart: {
         type: "radialBar" as const,
-        height: 350,
+        height: width < 640 ? 250 : 350, // Responsive height
         background: "transparent",
         animations: { enabled: true, easing: "easeinout", speed: 300 },
       },
@@ -138,7 +138,7 @@ export default function Dashboard() {
             name: { show: false },
             value: {
               show: true,
-              fontSize: "16px",
+              fontSize: width < 640 ? "14px" : "16px", // Smaller font on mobile
               fontWeight: 600,
               color: "#3b82f6",
             },
@@ -150,10 +150,9 @@ export default function Dashboard() {
       legend: {
         show: true,
         floating: true,
-        fontSize: "12px",
-        position: "left" as const,
-        offsetX: 50,
-        offsetY: 10,
+        fontSize: width < 640 ? "10px" : "12px",
+        position: width < 640 ? ("bottom" as const) : ("left" as const),
+        offsetY: width < 640 ? 0 : 10,
         labels: { colors: "#3b82f6" },
         markers: { size: 0 },
         formatter: (seriesName: string, opts: any) =>
@@ -161,14 +160,14 @@ export default function Dashboard() {
         itemMargin: { vertical: 3 },
       },
     }),
-    [topLikedClubs]
+    [topLikedClubs, width]
   );
 
   const trendsChartOptions = useMemo(
     () => ({
       chart: {
         type: "line" as const,
-        height: 400,
+        height: width < 640 ? 300 : 400, // Responsive height
         background: "transparent",
         toolbar: { show: false },
         animations: { enabled: true, easing: "easeinout", speed: 300 },
@@ -185,7 +184,13 @@ export default function Dashboard() {
       },
       xaxis: {
         categories: clubData.ClubsActivity.map((club) => club.displayName),
-        labels: { style: { colors: "#3b82f6", fontSize: "12px" }, rotate: -45 },
+        labels: {
+          style: {
+            colors: "#3b82f6",
+            fontSize: width < 640 ? "10px" : "12px",
+          }, // Smaller font on mobile
+          rotate: width < 640 ? -90 : -45, // More rotation on mobile
+        },
       },
       yaxis: { labels: { style: { colors: "#3b82f6" } } },
       tooltip: { theme: "light", style: { fontSize: "12px" } },
@@ -195,14 +200,14 @@ export default function Dashboard() {
         labels: { colors: "#3b82f6" },
       },
     }),
-    []
+    [width]
   );
 
   const donutOptions = useMemo(
     () => ({
       chart: {
         type: "donut" as const,
-        height: 350,
+        height: width < 640 ? 250 : 350, // Responsive height
         background: "transparent",
         animations: { enabled: true, speed: 300 },
       },
@@ -216,7 +221,11 @@ export default function Dashboard() {
       ],
 
       labels: topClubs.slice(0, 6).map((club) => club.displayName),
-      legend: { position: "bottom" as const, labels: { colors: "#3b82f6" } },
+      legend: {
+        position: "bottom" as const,
+        labels: { colors: "#3b82f6" },
+        fontSize: width < 640 ? "10px" : "12px", // Smaller font on mobile
+      },
       plotOptions: {
         pie: {
           donut: {
@@ -227,7 +236,7 @@ export default function Dashboard() {
                 show: true,
                 label: "Total Activity",
                 color: "#3b82f6",
-                fontSize: "16px",
+                fontSize: width < 640 ? "14px" : "16px", // Smaller font on mobile
                 fontWeight: 600,
               },
             },
@@ -237,35 +246,39 @@ export default function Dashboard() {
       dataLabels: {
         enabled: true,
         formatter: (val: number) => `${val.toFixed(1)}%`,
-        style: { fontSize: "12px", fontWeight: "bold", colors: ["#fff"] },
+        style: {
+          fontSize: width < 640 ? "10px" : "12px",
+          fontWeight: "bold",
+          colors: ["#fff"],
+        }, // Smaller font on mobile
       },
       tooltip: {
         theme: "light",
         y: { formatter: (val: number) => `${val} activities` },
       },
     }),
-    [topClubs]
+    [topClubs, width]
   );
 
   return (
     <div className="min-h-screen">
-      <div className="container mx-auto p-6 space-y-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="container mx-auto p-3 sm:p-6 space-y-6 sm:space-y-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
           {userStats.map((stat, index) => (
             <div
               key={index}
-              className="bg-gradient-to-b from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border border-blue-200 dark:border-blue-800 rounded-xl p-4"
+              className="bg-gradient-to-b from-blue-50 to-blue-100 dark:from-blue-950 dark:to-blue-900 border border-blue-200 dark:border-blue-800 rounded-xl p-3 sm:p-4" // Reduced padding on mobile
             >
               <div className="flex items-center justify-between pb-2">
-                <h2 className="text-sm font-semibold text-slate-700">
+                <h2 className="text-xs sm:text-sm font-semibold text-slate-700">
                   {stat.name}
                 </h2>
-                <div className="p-3 rounded-2xl">
-                  <stat.icon className="h-8 w-8 text-blue-900" />
+                <div className="p-2 sm:p-3 rounded-2xl">
+                  <stat.icon className="h-6 w-6 sm:h-8 sm:w-8 text-blue-900" />
                 </div>
               </div>
               <div>
-                <p className="text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text">
+                <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-slate-800 to-slate-600 dark:from-slate-200 dark:to-slate-400 bg-clip-text">
                   {stat.value}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -275,20 +288,18 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
-
-        <div className="space-y-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Activity Flow Section */}
+        <div className="space-y-6 sm:space-y-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
             <section className="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl overflow-hidden">
-              <header className="border-b border-gray-200 dark:border-gray-800 py-4 px-6">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">
                   Activity Flow
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                   Visualization of club engagement levels
                 </p>
               </header>
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {mounted && (
                   <Chart
                     options={activityChartOptions}
@@ -299,29 +310,36 @@ export default function Dashboard() {
                       },
                     ]}
                     type="area"
-                    height={350}
+                    height={width < 640 ? 250 : 350} // Responsive height
                   />
                 )}
               </div>
             </section>
-
             {/* Top Performers Section */}
             <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl">
-              <header className="border-b border-gray-200 dark:border-gray-800 py-4 px-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100">
+              <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
+                {" "}
+                {/* Reduced padding on mobile */}
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
+                  {" "}
+                  {/* Smaller heading on mobile */}
                   Top Performers
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Most active clubs this period
                 </p>
               </header>
-              <div className="p-6 space-y-3">
+              <div className="p-4 sm:p-6 space-y-2 sm:space-y-3">
+                {" "}
+                {/* Reduced padding and spacing on mobile */}
                 {topClubs.slice(0, 5).map((club, index) => (
                   <div
                     key={club.name}
-                    className="flex items-center justify-between p-3 rounded-xl bg-blue-100/30 dark:bg-gray-800 odd:bg-blue-400/20"
+                    className="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-blue-100/30 dark:bg-gray-800 odd:bg-blue-400/20" // Reduced padding on mobile
                   >
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-2 sm:space-x-3">
+                      {" "}
+                      {/* Reduced spacing on mobile */}
                       <div
                         className={` ${
                           index === 0
@@ -339,15 +357,19 @@ export default function Dashboard() {
                           index > 2
                             ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                             : ""
-                        } px-3 py-1 font-bold shadow rounded-full text-sm `}
+                        } px-2 sm:px-3 py-1 font-bold shadow rounded-full text-xs sm:text-sm `} // Smaller padding and text on mobile
                       >
                         #{index + 1}
                       </div>
-                      <span className="text-gray-800 dark:text-gray-100 font-semibold">
+                      <span className="text-sm sm:text-base text-gray-800 dark:text-gray-100 font-semibold">
+                        {" "}
+                        {/* Smaller text on mobile */}
                         {club.displayName}
                       </span>
                     </div>
-                    <p className="font-bold text-gray-900 dark:text-gray-50">
+                    <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-50">
+                      {" "}
+                      {/* Smaller text on mobile */}
                       {club.value}
                     </p>
                   </div>
@@ -355,19 +377,17 @@ export default function Dashboard() {
               </div>
             </section>
           </div>
-
-          {/* Popularity Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl overflow-hidden">
-              <header className="border-b border-gray-200 dark:border-gray-800 py-4 px-6">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">
                   Popularity Spectrum
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                   Radial visualization of club popularity metrics
                 </p>
               </header>
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {mounted && (
                   <Chart
                     options={popularityChartOptions}
@@ -381,47 +401,44 @@ export default function Dashboard() {
                         )
                       )}
                     type="radialBar"
-                    height={350}
+                    height={width < 640 ? 250 : 350} // Responsive height
                   />
                 )}
               </div>
             </section>
-
             {/* Activity Distribution Section */}
             <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl overflow-hidden">
-              <header className="border-b border-gray-200 dark:border-gray-800 py-4 px-6">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+              <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">
                   Activity Distribution
                 </h2>
-                <p className="text-gray-500 dark:text-gray-400">
+                <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                   Donut visualization of club activity shares
                 </p>
               </header>
-              <div className="p-6">
+              <div className="p-4 sm:p-6">
                 {mounted && (
                   <Chart
                     options={donutOptions}
                     series={topClubs.slice(0, 6).map((club) => club.value)}
                     type="donut"
-                    height={350}
+                    height={width < 640 ? 250 : 350}
                   />
                 )}
               </div>
             </section>
           </div>
-
-          {/* Trends Section */}
           <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl overflow-hidden">
-            <header className="border-b border-gray-200 dark:border-gray-800 py-4 px-6">
-              <h2 className="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+            <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">
                 Performance Correlation
               </h2>
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
                 Smooth trend analysis comparing activity levels with popularity
                 metrics
               </p>
             </header>
-            <div className="p-6">
+            <div className="p-4 sm:p-6">
               {mounted && (
                 <Chart
                   options={trendsChartOptions}
@@ -441,7 +458,7 @@ export default function Dashboard() {
                     },
                   ]}
                   type="line"
-                  height={400}
+                  height={width < 640 ? 300 : 400}
                 />
               )}
             </div>
