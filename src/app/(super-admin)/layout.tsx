@@ -40,14 +40,14 @@ export default function SuperAdminLayout({
   ];
 
   return (
-    <div className="flex h-full w-full bg-gray-50 dark:bg-gray-900 text-black">
+    <div className="flex h-full w-full bg-gray-50 dark:bg-gray-900 text-black dark:text-white">
       {/* Desktop Sidebar */}
       <DashboardSidebar />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
-        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white capitalize">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+          <h1 className="text-lg sm:text-2xl font-semibold capitalize">
             Eventify SEU
           </h1>
 
@@ -91,7 +91,8 @@ export default function SuperAdminLayout({
           </div>
         </header>
 
-        <main className="flex-1 p-6 bg-white dark:bg-gray-950">{children}</main>
+        {/* Auto theme-aware background for children */}
+        <main className="flex-1 p-4 sm:p-6 overflow-hidden">{children}</main>
       </div>
     </div>
   );

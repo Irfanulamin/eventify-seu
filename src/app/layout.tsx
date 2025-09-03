@@ -26,7 +26,7 @@ export default function RootLayout({
         <AuthProvider>
           <Suspense fallback={null}>{children}</Suspense>
         </AuthProvider>
-        <Toaster theme="dark" position="bottom-right" />
+        <Toaster richColors position="bottom-right" />
       </body>
     </html>
   );
