@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 interface NavItem {
   id: string;
@@ -56,6 +57,7 @@ export function SidebarContent({
   onMobileClose?: () => void;
 }) {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const handleItemClick = (itemId: string) => {
     onItemClick?.(itemId);
@@ -63,7 +65,6 @@ export function SidebarContent({
       onMobileClose();
     }
   };
-
   return (
     <>
       <div className="flex items-center justify-between p-4 border-b border-blue-200 dark:border-blue-800">
@@ -162,10 +163,10 @@ export function SidebarContent({
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-blue-900 dark:text-blue-100 truncate">
-                TEST ADMIN
+                {user?.username || "Admin"}
               </p>
               <p className="text-xs text-blue-600 dark:text-blue-400 truncate">
-                admin@test.com
+                {user?.email || "admin@test.com"}
               </p>
             </div>
           </div>
@@ -191,7 +192,7 @@ export function DashboardSidebar({
     <>
       <div
         className={cn(
-          "hidden md:flex relative flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50 border-r border-blue-200 dark:border-blue-800 transition-all duration-300",
+          "hidden lg:flex relative flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50 border-r border-blue-200 dark:border-blue-800 transition-all duration-300",
           isCollapsed ? "w-16" : "w-64",
           className
         )}

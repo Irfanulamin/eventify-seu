@@ -6,8 +6,7 @@ import { CommonNavbar } from "@/components/common/CommonNavbar";
 
 export default function Banner() {
   return (
-    <div className="relative w-full h-screen font-sans overflow-x-hidden">
-      {/* Beams Background */}
+    <div className="relative w-full h-screen font-sans overflow-x-hidden bg-slate-950">
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Beams
           beamWidth={1.5}
@@ -20,10 +19,7 @@ export default function Banner() {
           rotation={20}
         />
       </div>
-
-      {/* Transparent Navbar */}
       <CommonNavbar />
-      {/* Banner Content */}
       <div className="relative z-10 flex items-center justify-center h-full">
         <div className="text-center text-white max-w-4xl px-6">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">

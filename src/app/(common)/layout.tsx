@@ -3,9 +3,8 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/use-auth";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import UserNavbar from "@/components/common/UserNavbar";
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { user, isLoading } = useAuth();

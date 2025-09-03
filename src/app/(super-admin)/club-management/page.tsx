@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import CreateClubForm from "./_components/CreateClub";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Edit, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import Image from "next/image";
+import EditClubForm from "./_components/EditClub";
+import DeleteClubDialog from "./_components/DeleteClub";
 
-// ✅ Define interface for Club
 interface Club {
   _id: string;
   name: string;
@@ -15,7 +16,6 @@ interface Club {
   imageUrl?: string;
 }
 
-// ✅ Fetch clubs with type
 async function getClubs(): Promise<Club[]> {
   try {
     const res = await fetch("http://localhost:5000/api/clubs/", {
@@ -43,14 +43,27 @@ export default function ClubManagementPage() {
 
   return (
     <>
-      <CreateClubForm />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="my-4 flex justify-end">
+        <div>
+          <h2 className="text-right text-lg font-semibold text-gray-800">
+            Create a new club
+          </h2>
+          <p className="text-right text-sm text-gray-600 mb-2">
+            Click the button below to add your club to the list.
+          </p>
+          <div className="my-4 flex justify-end">
+            <CreateClubForm onSuccess={fetchClubs} />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center">
         {clubs.map((club) => (
           <Card
             key={club._id}
-            className="relative w-full h-96 bg-white/10 border border-white/20 shadow transition-all duration-300 rounded-xl p-0 flex flex-col"
+            className="relative w-full max-w-sm bg-white/10 border border-white/20 shadow transition-all duration-300 rounded-xl p-0 flex flex-col"
           >
-            <div className="relative h-48 w-full overflow-hidden rounded-t-xl">
+            <div className="relative w-full aspect-square overflow-hidden rounded-t-xl">
               <Image
                 src={
                   club?.imageUrl ||
@@ -62,7 +75,7 @@ export default function ClubManagementPage() {
               />
             </div>
 
-            <div className="px-6 py-4 bg-gradient-to-b from-white/5 to-white/10 flex flex-col justify-between flex-1">
+            <div className="px-6 bg-gradient-to-b from-white/5 to-white/10 flex flex-col justify-between flex-1">
               <div className="flex flex-col gap-2 text-left">
                 <h3 className="text-xl font-semibold text-blue-900 leading-tight">
                   {club.name}
@@ -71,20 +84,11 @@ export default function ClubManagementPage() {
                   {club.description}
                 </p>
               </div>
+            </div>
 
-              <Button
-                asChild
-                className="mt-4 w-full bg-blue-500 text-blue-900 font-medium transition-all duration-200 rounded-lg"
-              >
-                <a
-                  href={club.fbLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2"
-                >
-                  Follow on Facebook
-                </a>
-              </Button>
+            <div className="flex gap-4 p-4">
+              <EditClubForm clubData={club} onSuccess={fetchClubs} />
+              <DeleteClubDialog clubData={club} onSuccess={fetchClubs} />
             </div>
           </Card>
         ))}

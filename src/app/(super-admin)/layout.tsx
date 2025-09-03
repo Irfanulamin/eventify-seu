@@ -1,19 +1,18 @@
 "use client";
 import Link from "next/link";
-import {
-  DashboardSidebar,
-  SidebarContent,
-} from "@/components/common/SuperAdminSideBar";
+import { DashboardSidebar } from "@/components/common/SuperAdminSideBar";
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { BarChart3, Home, Menu, Users } from "lucide-react";
-import React, { useState } from "react";
-import { cn } from "@/lib/utils"; // helper for conditional classes
-import { usePathname } from "next/navigation";
+import { BarChart3, Home, LogOut, Menu, Users } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/use-auth";
+import { Button } from "@/components/ui/button";
 
 export default function SuperAdminLayout({
   children,
@@ -22,6 +21,18 @@ export default function SuperAdminLayout({
 }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isLoading, logout } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && (!user || user.role !== "super-admin")) {
+      router.replace("/register");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user || user.role !== "super-admin") {
+    return null;
+  }
 
   const defaultNavItems = [
     { id: "dashboard", label: "Dashboard", icon: Home, href: "/dashboard" },
@@ -41,18 +52,23 @@ export default function SuperAdminLayout({
 
   return (
     <div className="flex h-full w-full bg-gray-50 dark:bg-gray-900 text-black dark:text-white">
-      {/* Desktop Sidebar */}
       <DashboardSidebar />
-
-      {/* Main Content */}
       <div className="flex-1 flex flex-col">
         <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
-          <h1 className="text-lg sm:text-2xl font-semibold capitalize">
-            Eventify SEU
-          </h1>
+          <div>
+            <h1 className="text-lg sm:text-2xl font-semibold capitalize">
+              Eventify SEU
+            </h1>
+          </div>
+          <Button
+            variant="destructive"
+            className="hover:bg-red-700 duration-100 transition"
+            onClick={() => logout()}
+          >
+            Log Out <LogOut className="w-4 h-4" />
+          </Button>
 
-          {/* Mobile Menu */}
-          <div className="md:hidden">
+          <div className="block lg:hidden">
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
               <SheetTrigger asChild>
                 <button className="p-2 rounded-lg bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition-colors">
@@ -90,8 +106,6 @@ export default function SuperAdminLayout({
             </Sheet>
           </div>
         </header>
-
-        {/* Auto theme-aware background for children */}
         <main className="flex-1 p-4 sm:p-6 overflow-hidden">{children}</main>
       </div>
     </div>

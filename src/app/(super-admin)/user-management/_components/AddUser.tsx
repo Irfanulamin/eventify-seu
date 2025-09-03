@@ -119,7 +119,7 @@ export default function AddUserForm({ onUserCreated }: AddUserFormProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button className="text-white bg-blue-950 hover:bg-blue-900 transition duration-300 flex items-center gap-2 rounded-md">
+        <Button className="text-white w-full md:w-auto bg-blue-950 hover:bg-blue-900 transition duration-300 flex items-center gap-2 rounded-md">
           <Plus className="w-4 h-4" /> Add User
         </Button>
       </SheetTrigger>

@@ -94,7 +94,7 @@ export default function UserManagement() {
       {/* Filters */}
       <section className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
         {/* Search */}
-        <div className="flex-1 min-w-[200px]">
+        <div className="min-w-[300px]">
           <Label className="mb-1 block">Search Users</Label>
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -109,7 +109,7 @@ export default function UserManagement() {
         </div>
 
         {/* Role filter */}
-        <div className="flex-1 min-w-[150px]">
+        <div className="min-w-[150px]">
           <Label className="mb-1 block">Filter by Role</Label>
           <Select
             value={roleFilter || "all"}
@@ -137,64 +137,117 @@ export default function UserManagement() {
 
       {/* Table */}
       <div className="overflow-x-auto border border-blue-50 rounded-md">
-        <Table>
-          <TableHeader>
-            <TableRow className="text-sm sm:text-base">
-              <TableHead>Username</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead className="hidden sm:table-cell">
-                Created Date
-              </TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredUsers.length > 0 ? (
-              filteredUsers.map((u) => (
-                <TableRow
-                  key={u._id}
-                  className="bg-blue-50 odd:bg-blue-50/50 border-0 text-sm sm:text-base"
-                >
-                  <TableCell>{u.username}</TableCell>
-                  <TableCell>
-                    <div className="text-xs sm:text-sm text-white bg-blue-500 rounded-full inline-block p-1 px-1.5">
-                      {u.email}
+        {/* Desktop Table View */}
+        <div className="hidden sm:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Username</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Created Date
+                </TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {filteredUsers.length > 0 ? (
+                filteredUsers.map((u) => (
+                  <TableRow
+                    key={u._id}
+                    className="bg-blue-50 odd:bg-blue-50/50 border-0"
+                  >
+                    <TableCell className="font-medium">{u.username}</TableCell>
+                    <TableCell>
+                      <div className="text-xs bg-blue-500 text-white rounded-full inline-block py-1 px-2 max-w-[200px] truncate">
+                        {u.email}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-xs bg-blue-950 py-1 px-2 text-white rounded-full uppercase">
+                        {u.role.replace("-", " ")}
+                      </span>
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell text-blue-950 font-medium">
+                      {formatDate(u.createdAt)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <EditUserDialog user={u} onRoleUpdated={fetchUsers} />
+                        <DeleteUserDialog
+                          userId={u._id}
+                          userName={u.username}
+                          onUserDeleted={fetchUsers}
+                        />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center py-12 text-muted-foreground"
+                  >
+                    <div className="flex flex-col items-center gap-2">
+                      <Users className="h-8 w-8 text-muted-foreground/50" />
+                      <div>No users found</div>
                     </div>
                   </TableCell>
-                  <TableCell>
-                    <span className="text-xs sm:text-sm bg-blue-950 p-1 px-1.5 text-white rounded-full uppercase">
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </div>
+      {/* Mobile Card View */}
+      <div className="sm:hidden">
+        {filteredUsers.length > 0 ? (
+          <div className="space-y-3 ">
+            {filteredUsers.map((u) => (
+              <div
+                key={u._id}
+                className="bg-blue-50 rounded-lg p-4 space-y-3 border border-blue-100"
+              >
+                {/* User Info */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm uppercase">
+                      @{u.username}
+                    </h3>
+                    <span className="text-xs bg-blue-950 py-1 px-2 text-white rounded-full uppercase">
                       {u.role.replace("-", " ")}
                     </span>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell text-blue-950 font-medium">
-                    {formatDate(u.createdAt)}
-                  </TableCell>
-                  <TableCell className="flex flex-wrap gap-2">
-                    <EditUserDialog user={u} onRoleUpdated={fetchUsers} />
-                    <DeleteUserDialog
-                      userId={u._id}
-                      userName={u.username}
-                      onUserDeleted={fetchUsers}
-                    />
-                  </TableCell>
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={5}
-                  className="text-center py-12 text-muted-foreground"
-                >
-                  <div className="flex flex-col items-center gap-2">
-                    <Users className="h-8 w-8 text-muted-foreground/50" />
-                    <div>No users found</div>
                   </div>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                  <div className="text-xs bg-blue-500 text-white rounded-full inline-block py-1 px-2 max-w-full truncate">
+                    {u.email}
+                  </div>
+                  <div className="text-xs text-blue-950 font-medium">
+                    Created: {formatDate(u.createdAt)}
+                  </div>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-2 pt-2 border-t border-blue-200">
+                  <EditUserDialog user={u} onRoleUpdated={fetchUsers} />
+                  <DeleteUserDialog
+                    userId={u._id}
+                    userName={u.username}
+                    onUserDeleted={fetchUsers}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 text-muted-foreground">
+            <div className="flex flex-col items-center gap-2">
+              <Users className="h-8 w-8 text-muted-foreground/50" />
+              <div className="text-sm">No users found</div>
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

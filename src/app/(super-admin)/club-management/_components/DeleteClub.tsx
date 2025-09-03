@@ -1,67 +1,68 @@
 "use client";
 
-import React, { useState } from "react";
 import axios from "axios";
-import { Trash2Icon } from "lucide-react";
+import { useState } from "react";
+import { Trash2 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
-  DialogHeader,
-  DialogTitle,
   DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 
-interface DeleteUserDialogProps {
-  userId: string;
-  onUserDeleted: () => void;
-  userName: string;
+interface DeleteClubProps {
+  clubData: {
+    _id: string;
+    name: string;
+  };
+  onSuccess: () => void;
 }
 
-export default function DeleteUserDialog({
-  userId,
-  onUserDeleted,
-  userName,
-}: DeleteUserDialogProps) {
+export default function DeleteClubDialog({
+  clubData,
+  onSuccess,
+}: DeleteClubProps) {
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleDelete = async () => {
-    setLoading(true);
     try {
-      const res = await axios.delete(
-        `http://localhost:5000/api/users/delete/${userId}`
+      setLoading(true);
+
+      await axios.delete(
+        `http://localhost:5000/api/clubs/delete/${clubData._id}`
       );
-      if (res.data?.success) {
-        toast.success("User deleted successfully");
-        onUserDeleted();
-      } else {
-        toast.error("Failed to delete user");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong");
+
+      toast.success(`${clubData.name} has been deleted.`);
+      setOpen(false);
+      onSuccess();
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to delete club");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="bg-slate-200 hover:bg-slate-300 text-blue-950 p-2 border border-blue-950/50 rounded-md">
-          <Trash2Icon className="w-4 h-4" />
-        </div>
+        <Button className="flex-1 border-slate-950 rounded-md border hover:bg-gray-200">
+          Delete <Trash2 className="w-4 h-4" />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-black">
-            Delete User
+            Delete Club
             <span className="px-2 py-0.5 text-xs font-medium uppercase text-white bg-red-600 rounded-full">
-              {userName}
+              {clubData?.name}
             </span>
           </DialogTitle>
 
@@ -71,15 +72,20 @@ export default function DeleteUserDialog({
             Are you sure you want to continue?
           </DialogDescription>
         </DialogHeader>
-        <DialogFooter className="flex justify-end gap-4">
-          <DialogClose className="text-black text-sm hover:text-black cursor-pointer border-0">
+        <DialogFooter className="flex gap-4 justify-end">
+          <DialogClose
+            onClick={() => setOpen(false)}
+            disabled={loading}
+            className="text-black text-sm hover:text-black cursor-pointer border-0"
+          >
             Cancel
           </DialogClose>
           <Button
+            type="button"
             variant="destructive"
-            className="hover:bg-red-700 duration-100 transition"
             onClick={handleDelete}
             disabled={loading}
+            className="hover:bg-red-700 duration-100 transition"
           >
             {loading ? "Deleting..." : "Delete"}
           </Button>
