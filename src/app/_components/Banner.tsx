@@ -8,7 +8,16 @@ export default function Banner() {
   return (
     <div className="relative w-full h-screen overflow-hidden">
       <div className="absolute inset-0 bg-black/80">
-        <Beams />
+        <Beams
+          beamWidth={2}
+          beamHeight={18}
+          beamNumber={26}
+          speed={3}
+          lightColor="#0096FF"
+          noiseIntensity={1.5}
+          scale={0.2}
+          rotation={40}
+        />
       </div>
       <CommonNavbar />
       <div className="relative flex items-center justify-center h-full">

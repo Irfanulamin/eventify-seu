@@ -1,205 +1,19 @@
 "use client";
 import gsap from "gsap";
-import Image from "next/image";
-import { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import CircularText from "@/components/ui/circle_text";
-import Threads from "@/components/ui/thread";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const bentoRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const sectionTitleRef = useRef<HTMLHeadingElement>(null);
+  const sectionTitleRef = useRef<HTMLDivElement>(null);
   const missionTitleRef = useRef<HTMLHeadingElement>(null);
-  const missionTextRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
   const studentFriendlyRef = useRef<HTMLDivElement>(null);
   const seamlessAppsRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline();
-
-      // Titles
-      tl.fromTo(
-        titleRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }
-      );
-
-      tl.fromTo(
-        subtitleRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-        "-=0.3"
-      );
-
-      // Section Title
-      gsap.fromTo(
-        sectionTitleRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionTitleRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Bento Items
-      gsap.utils.toArray(".bento-item").forEach((item: any, index) => {
-        gsap.fromTo(
-          item,
-          { opacity: 0, y: 60, filter: "blur(10px)" },
-          {
-            opacity: 1,
-            y: 0,
-            filter: "blur(0px)",
-            duration: 0.5,
-            delay: index * 0.03,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: item,
-              start: "top 70%",
-              toggleActions: "play none none reverse",
-            },
-          }
-        );
-
-        item.addEventListener("mouseenter", () => {
-          gsap.to(item, {
-            scale: 1.02,
-            filter: "blur(0px) brightness(1.1)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-
-        item.addEventListener("mouseleave", () => {
-          gsap.to(item, {
-            scale: 1,
-            filter: "blur(0px) brightness(1)",
-            duration: 0.3,
-            ease: "power2.out",
-          });
-        });
-      });
-
-      // Mission Title
-      gsap.fromTo(
-        missionTitleRef.current,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: missionTitleRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // CTA (kept as fixed)
-      gsap.fromTo(
-        ctaRef.current,
-        { opacity: 0, y: 60, scale: 0.95, filter: "blur(8px)" },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          filter: "blur(0px)",
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ctaRef.current,
-            start: "top 70%",
-            end: "top 40%",
-            scrub: 1,
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Student Friendly
-      gsap.fromTo(
-        studentFriendlyRef.current,
-        { opacity: 0, x: 100, filter: "blur(5px)" },
-        {
-          opacity: 1,
-          x: 0,
-          filter: "blur(0px)",
-          duration: 0.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: studentFriendlyRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-
-      // Seamless Apps
-      gsap.fromTo(
-        seamlessAppsRef.current,
-        { opacity: 0, x: 100, filter: "blur(5px)" },
-        {
-          opacity: 1,
-          x: 0,
-          filter: "blur(0px)",
-          duration: 0.5,
-          delay: 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: seamlessAppsRef.current,
-            start: "top 70%",
-            toggleActions: "play none none reverse",
-          },
-        }
-      );
-    }, bentoRef.current as any);
-
-    return () => ctx.revert();
-  }, []);
-
-  useEffect(() => {
-    const button = document.querySelector(".cta-button");
-    if (!button) return;
-
-    const handleMouseEnter = () => {
-      gsap.to(button, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    };
-
-    const handleMouseLeave = () => {
-      gsap.to(button, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    };
-
-    button.addEventListener("mouseenter", handleMouseEnter);
-    button.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      button.removeEventListener("mouseenter", handleMouseEnter);
-      button.removeEventListener("mouseleave", handleMouseLeave);
-    };
-  }, []);
+  const ctaRef = useRef<HTMLDivElement>(null);
 
   const bentoItems = [
     {
@@ -269,6 +83,84 @@ export default function About() {
       size: "col-span-2 row-span-1",
     },
   ];
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Defaults for ScrollTrigger animations
+      const scrollDefaults = {
+        start: "top 70%",
+        toggleActions: "play none none reverse",
+        ease: "power2.out",
+      };
+
+      // Helper functions
+      const fadeInUp = (el: any, delay = 0) =>
+        gsap.fromTo(
+          el,
+          { opacity: 0, y: 50 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay,
+            scrollTrigger: { ...scrollDefaults, trigger: el },
+          }
+        );
+
+      const fadeInLeft = (el: any, delay = 0) =>
+        gsap.fromTo(
+          el,
+          { opacity: 0, x: 100, filter: "blur(5px)" },
+          {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            duration: 0.5,
+            delay,
+            scrollTrigger: { ...scrollDefaults, trigger: el },
+          }
+        );
+
+      const fadeInRight = (el: any, delay = 0) =>
+        gsap.fromTo(
+          el,
+          { opacity: 0, x: -100, filter: "blur(5px)" },
+          {
+            opacity: 1,
+            x: 0,
+            filter: "blur(0px)",
+            duration: 0.5,
+            delay,
+            scrollTrigger: { ...scrollDefaults, trigger: el },
+          }
+        );
+      fadeInUp(sectionTitleRef.current);
+      gsap.utils.toArray(".bento-item").forEach((item: any, i) => {
+        fadeInUp(item, i * 0.05);
+
+        item.addEventListener("mouseenter", () => {
+          gsap.to(item, {
+            scale: 1.03,
+            filter: "brightness(1.1)",
+            duration: 0.3,
+          });
+        });
+
+        item.addEventListener("mouseleave", () => {
+          gsap.to(item, { scale: 1, filter: "brightness(1)", duration: 0.3 });
+        });
+      });
+
+      // Mission Section
+      fadeInUp(missionTitleRef.current);
+      fadeInLeft(studentFriendlyRef.current);
+      fadeInLeft(seamlessAppsRef.current, 0.1);
+      fadeInUp(ctaRef.current);
+    }, bentoRef.current as any);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div
       id="about"
@@ -299,6 +191,7 @@ export default function About() {
           </div>
         </div>
       </div>
+
       <section
         ref={bentoRef}
         className="container mx-auto px-4 py-12 hidden md:block"
@@ -321,23 +214,19 @@ export default function About() {
           ))}
         </div>
       </section>
+
       <div id="mission" className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <h2
                 ref={missionTitleRef}
-                className="text-3xl md:text-4xl font-bold mb-6 text-white 
-             bg-primary/5 backdrop-blur-md rounded-lg p-4"
+                className="text-3xl md:text-4xl font-bold mb-6 text-white bg-primary/5 backdrop-blur-md rounded-lg p-4"
               >
                 Our Mission
               </h2>
-
               <div>
-                <p
-                  ref={missionTextRef}
-                  className="text-lg text-gray-300 mb-6 leading-relaxed"
-                >
+                <p className="text-lg text-gray-300 mb-6 leading-relaxed">
                   This platform is built for Southeast University students — by
                   SEUians, for SEUians. Say goodbye to the hassle of scattered
                   announcements. No more jumping between Facebook, Messenger, or
@@ -387,6 +276,7 @@ export default function About() {
               </div>
             </div>
           </div>
+
           <div
             ref={ctaRef}
             className="mt-16 text-center bg-slate-900/10 backdrop-blur-3xl rounded-2xl p-8 border border-slate-700"
