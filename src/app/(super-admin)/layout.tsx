@@ -60,13 +60,16 @@ export default function SuperAdminLayout({
               Eventify SEU
             </h1>
           </div>
-          <Button
-            variant="destructive"
-            className="hover:bg-red-700 duration-100 transition"
-            onClick={() => logout()}
-          >
-            Log Out <LogOut className="w-4 h-4" />
-          </Button>
+          <div className="hidden md:block">
+            {" "}
+            <Button
+              variant="destructive"
+              className="hover:bg-red-700 duration-100 transition"
+              onClick={() => logout()}
+            >
+              Log Out <LogOut className="w-4 h-4" />
+            </Button>
+          </div>
 
           <div className="block lg:hidden">
             <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
@@ -77,8 +80,8 @@ export default function SuperAdminLayout({
               </SheetTrigger>
               <SheetTitle />
               <SheetContent side="left" className="w-64">
-                <div className="py-12 flex flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50">
-                  <nav className="flex flex-col space-y-2 p-4">
+                <div className="flex flex-col min-h-screen h-auto bg-gradient-to-b from-blue-50 to-blue-100/50 dark:from-blue-950 dark:to-blue-900/50">
+                  <nav className="flex flex-col space-y-2 p-4 py-12">
                     {defaultNavItems.map((item) => {
                       const isActive = pathname.startsWith(item.href);
                       return (
@@ -100,6 +103,13 @@ export default function SuperAdminLayout({
                         </Link>
                       );
                     })}
+                    <Button
+                      variant="destructive"
+                      className="hover:bg-red-700 duration-100 transition"
+                      onClick={() => logout()}
+                    >
+                      Log Out <LogOut className="w-4 h-4" />
+                    </Button>
                   </nav>
                 </div>
               </SheetContent>

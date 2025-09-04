@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import CreateClubForm from "./_components/CreateClub";
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
 import Image from "next/image";
 import EditClubForm from "./_components/EditClub";
 import DeleteClubDialog from "./_components/DeleteClub";

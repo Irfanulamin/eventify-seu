@@ -81,7 +81,6 @@ export default function UserManagement() {
 
   return (
     <main className="p-4 sm:p-6 space-y-6">
-      {/* Header */}
       <section className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
         <div>
           <h1 className="text-xl sm:text-2xl font-semibold">User Management</h1>
@@ -90,10 +89,7 @@ export default function UserManagement() {
           </p>
         </div>
       </section>
-
-      {/* Filters */}
       <section className="flex flex-col md:flex-row md:items-end gap-4 md:gap-6">
-        {/* Search */}
         <div className="min-w-[300px]">
           <Label className="mb-1 block">Search Users</Label>
           <div className="relative">
@@ -107,8 +103,6 @@ export default function UserManagement() {
             />
           </div>
         </div>
-
-        {/* Role filter */}
         <div className="min-w-[150px]">
           <Label className="mb-1 block">Filter by Role</Label>
           <Select
@@ -128,16 +122,11 @@ export default function UserManagement() {
             </SelectContent>
           </Select>
         </div>
-
-        {/* Add user button */}
         <div className="w-full sm:w-auto">
           <AddUserForm onUserCreated={fetchUsers} />
         </div>
       </section>
-
-      {/* Table */}
       <div className="overflow-x-auto border border-blue-50 rounded-md">
-        {/* Desktop Table View */}
         <div className="hidden sm:block">
           <Table>
             <TableHeader>
@@ -227,8 +216,6 @@ export default function UserManagement() {
                     Created: {formatDate(u.createdAt)}
                   </div>
                 </div>
-
-                {/* Actions */}
                 <div className="flex gap-2 pt-2 border-t border-blue-200">
                   <EditUserDialog user={u} onRoleUpdated={fetchUsers} />
                   <DeleteUserDialog

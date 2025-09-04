@@ -86,7 +86,7 @@ export default function Dashboard() {
     () => ({
       chart: {
         type: "area" as const,
-        height: width < 640 ? 250 : 350, // Responsive height
+        height: width < 640 ? 250 : 350,
         background: "transparent",
         toolbar: { show: false },
         animations: { enabled: true, easing: "easeinout", speed: 300 },
@@ -109,8 +109,8 @@ export default function Dashboard() {
           style: {
             colors: "#3b82f6",
             fontSize: width < 640 ? "10px" : "12px",
-          }, // Smaller font on mobile
-          rotate: width < 640 ? -90 : -45, // More rotation on mobile for better fit
+          },
+          rotate: width < 640 ? -90 : -45,
         },
       },
       yaxis: { labels: { style: { colors: "#3b82f6" } } },
@@ -124,7 +124,7 @@ export default function Dashboard() {
     () => ({
       chart: {
         type: "radialBar" as const,
-        height: width < 640 ? 250 : 350, // Responsive height
+        height: width < 640 ? 250 : 350,
         background: "transparent",
         animations: { enabled: true, easing: "easeinout", speed: 300 },
       },
@@ -138,7 +138,7 @@ export default function Dashboard() {
             name: { show: false },
             value: {
               show: true,
-              fontSize: width < 640 ? "14px" : "16px", // Smaller font on mobile
+              fontSize: width < 640 ? "14px" : "16px",
               fontWeight: 600,
               color: "#3b82f6",
             },
@@ -167,7 +167,7 @@ export default function Dashboard() {
     () => ({
       chart: {
         type: "line" as const,
-        height: width < 640 ? 300 : 400, // Responsive height
+        height: width < 640 ? 300 : 400,
         background: "transparent",
         toolbar: { show: false },
         animations: { enabled: true, easing: "easeinout", speed: 300 },
@@ -188,8 +188,8 @@ export default function Dashboard() {
           style: {
             colors: "#3b82f6",
             fontSize: width < 640 ? "10px" : "12px",
-          }, // Smaller font on mobile
-          rotate: width < 640 ? -90 : -45, // More rotation on mobile
+          },
+          rotate: width < 640 ? -90 : -45,
         },
       },
       yaxis: { labels: { style: { colors: "#3b82f6" } } },
@@ -207,7 +207,7 @@ export default function Dashboard() {
     () => ({
       chart: {
         type: "donut" as const,
-        height: width < 640 ? 250 : 350, // Responsive height
+        height: width < 640 ? 250 : 350,
         background: "transparent",
         animations: { enabled: true, speed: 300 },
       },
@@ -224,7 +224,7 @@ export default function Dashboard() {
       legend: {
         position: "bottom" as const,
         labels: { colors: "#3b82f6" },
-        fontSize: width < 640 ? "10px" : "12px", // Smaller font on mobile
+        fontSize: width < 640 ? "10px" : "12px",
       },
       plotOptions: {
         pie: {
@@ -236,7 +236,7 @@ export default function Dashboard() {
                 show: true,
                 label: "Total Activity",
                 color: "#3b82f6",
-                fontSize: width < 640 ? "14px" : "16px", // Smaller font on mobile
+                fontSize: width < 640 ? "14px" : "16px",
                 fontWeight: 600,
               },
             },
@@ -250,7 +250,7 @@ export default function Dashboard() {
           fontSize: width < 640 ? "10px" : "12px",
           fontWeight: "bold",
           colors: ["#fff"],
-        }, // Smaller font on mobile
+        },
       },
       tooltip: {
         theme: "light",
@@ -310,19 +310,14 @@ export default function Dashboard() {
                       },
                     ]}
                     type="area"
-                    height={width < 640 ? 250 : 350} // Responsive height
+                    height={width < 640 ? 250 : 350}
                   />
                 )}
               </div>
             </section>
-            {/* Top Performers Section */}
             <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl">
               <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
-                {" "}
-                {/* Reduced padding on mobile */}
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100">
-                  {" "}
-                  {/* Smaller heading on mobile */}
                   Top Performers
                 </h2>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -357,19 +352,15 @@ export default function Dashboard() {
                           index > 2
                             ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white"
                             : ""
-                        } px-2 sm:px-3 py-1 font-bold shadow rounded-full text-xs sm:text-sm `} // Smaller padding and text on mobile
+                        } px-2 sm:px-3 py-1 font-bold shadow rounded-full text-xs sm:text-sm `}
                       >
                         #{index + 1}
                       </div>
                       <span className="text-sm sm:text-base text-gray-800 dark:text-gray-100 font-semibold">
-                        {" "}
-                        {/* Smaller text on mobile */}
                         {club.displayName}
                       </span>
                     </div>
                     <p className="text-sm sm:text-base font-bold text-gray-900 dark:text-gray-50">
-                      {" "}
-                      {/* Smaller text on mobile */}
                       {club.value}
                     </p>
                   </div>
