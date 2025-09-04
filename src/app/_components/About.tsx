@@ -11,10 +11,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 export default function About() {
   const bentoRef = useRef<HTMLDivElement>(null);
-  const headerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const statsRef = useRef<HTMLDivElement>(null);
   const sectionTitleRef = useRef<HTMLHeadingElement>(null);
   const missionTitleRef = useRef<HTMLHeadingElement>(null);
   const missionTextRef = useRef<HTMLParagraphElement>(null);
@@ -38,14 +36,6 @@ export default function About() {
         { opacity: 0, y: 30 },
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
         "-=0.3"
-      );
-
-      // Stats
-      tl.fromTo(
-        statsRef.current?.children || [],
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: "power2.out" },
-        "-=0.2"
       );
 
       // Section Title
@@ -282,61 +272,32 @@ export default function About() {
   return (
     <div
       id="about"
-      className="bg-gradient-to-b from-black to-slate-950 text-white py-16 overflow-hidden"
+      className="bg-gradient-to-b from-slate-950 via-gray-950 to-black text-white py-2 md:py-16 lg:py-32 overflow-hidden"
     >
-      {/* Crown */}
-      <div className="container mx-auto px-4 text-center mb-8">
-        <div ref={sectionTitleRef}>
-          <CircularText
-            text="*UNIFIED*STUDENT*JOURNEY"
-            onHover="speedUp"
-            spinDuration={20}
-            className="text-xs"
-          />
-        </div>
-      </div>
-      {/* Header */}
-      <div ref={headerRef} className="container mx-auto px-4 text-center mb-16">
-        <h1
-          ref={titleRef}
-          className="text-4xl md:text-6xl font-bold mb-6 text-balance text-white"
-        >
+      <div ref={sectionTitleRef} className="mx-auto px-4 text-center mb-16">
+        <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance text-white">
           Why Choose Eventify SEU?
         </h1>
-        <p
-          ref={subtitleRef}
-          className="text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8"
-        >
+        <p className="text-lg text-gray-300 max-w-4xl mx-auto leading-relaxed mb-8">
           Eventify SEU brings together all 15+ clubs and organizations of
           Southeast University in one platform. No more following scattered
           Facebook groups or messy messenger updates — get every event, update,
           and application opportunity in one place.
         </p>
-        <div
-          ref={statsRef}
-          className="flex flex-wrap justify-center gap-8 text-sm text-gray-400"
-        >
-          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/30 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
-            <span className="text-2xl font-bold text-white">15+</span>
-            <span>Active Clubs</span>
+        <div className="flex flex-wrap justify-center gap-8">
+          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/15 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
+            <p className="text-2xl font-bold text-white">15+</p>
+            <p>Active Clubs</p>
           </div>
-          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/30 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
-            <span className="text-2xl font-bold text-white">1000+</span>
-            <span>Students Connected</span>
+          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/15 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
+            <p className="text-2xl font-bold text-white">1000+</p>
+            <p>Students Connected</p>
           </div>
-          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/30 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
-            <span className="text-2xl font-bold text-white">Unlimited</span>
-            <span>Opportunities to Join</span>
+          <div className="flex flex-col items-center p-4 rounded-lg bg-blue-900/15 border border-blue-700/50 backdrop-blur-md hover:border-blue-500/70 transition-all duration-300">
+            <p className="text-2xl font-bold text-white">Unlimited</p>
+            <p>Opportunities to Join</p>
           </div>
         </div>
-      </div>
-      <div style={{ width: "100%", height: "400px", position: "relative" }}>
-        <Threads
-          amplitude={1}
-          distance={0}
-          enableMouseInteraction={true}
-          color={[0, 0, 1]}
-        />
       </div>
       <section
         ref={bentoRef}
@@ -360,7 +321,6 @@ export default function About() {
           ))}
         </div>
       </section>
-      {/* Mission */}
       <div id="mission" className="container mx-auto px-4 py-16">
         <div className="max-w-6xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -368,7 +328,7 @@ export default function About() {
               <h2
                 ref={missionTitleRef}
                 className="text-3xl md:text-4xl font-bold mb-6 text-white 
-             bg-primary/10 backdrop-blur-md rounded-lg p-4"
+             bg-primary/5 backdrop-blur-md rounded-lg p-4"
               >
                 Our Mission
               </h2>
@@ -418,7 +378,7 @@ export default function About() {
                 <p className="text-gray-400 leading-relaxed">
                   Found an event that excites you? Just hit{" "}
                   <span className="font-medium border border-white px-2 py-1 rounded-full text-white text-sm">
-                    Apply Now
+                    Register
                   </span>{" "}
                   — no confusing steps, no scattered forms. Eventify SEU ensures
                   every SEUian can register for workshops, competitions, and
@@ -427,11 +387,9 @@ export default function About() {
               </div>
             </div>
           </div>
-
-          {/* CTA */}
           <div
             ref={ctaRef}
-            className="mt-16 text-center bg-slate-900 rounded-2xl p-8 border border-slate-700"
+            className="mt-16 text-center bg-slate-900/10 backdrop-blur-3xl rounded-2xl p-8 border border-slate-700"
           >
             <h3 className="text-2xl font-bold mb-4 text-white">
               Ready to Get Involved?

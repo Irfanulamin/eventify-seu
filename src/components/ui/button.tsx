@@ -10,17 +10,30 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-white text-black hover:bg-white/90 hover:shadow-[0_0_50px_rgba(255,255,255,0.9)] active:shadow-[0_0_70px_rgba(255,255,255,1.2)] transition-all duration-300 p-8 rounded-full font-normal text-lg",
+          "bg-white text-black hover:bg-white/90 transition-all duration-300 p-8 rounded-full font-normal text-lg",
+
+        primary:
+          "border-2 border-primary text-primary bg-gray-200 hover:bg-primary/10 hover:border-primary hover:text-primary hover:shadow-[0_0_40px_theme(colors.primary/50)] active:shadow-[0_0_60px_theme(colors.primary/70)] transition-all duration-300 p-6 rounded-full font-medium",
+
+        glow: "p-8 rounded-full font-normal text-lg bg-white text-black border border-white/50 hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] active:shadow-[0_0_60px_rgba(255,255,255,0.8)] transition-all duration-300 p-6 rounded-full",
+
+        outline:
+          "bg-transparent text-gray-300 border border-gray-500/30 hover:bg-gray-700/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 rounded-full transition-all duration-300",
+        outline_glow:
+          "p-8 font-normal text-lg bg-transparent text-gray-300 border border-white hover:bg-gray-700/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 rounded-full transition-all duration-300",
+
         destructive:
           "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
-        outline:
-          "border-2 border-white/50 text-white bg-transparent hover:bg-white/10 hover:border-white hover:text-white hover:shadow-[0_0_50px_rgba(255,255,255,0.7)] active:shadow-[0_0_70px_rgba(255,255,255,0.9)] transition-all duration-300 p-8 rounded-full font-normal text-lg",
+
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
+
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+
         link: "text-primary underline-offset-4 hover:underline",
       },
+
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
         sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
@@ -28,6 +41,7 @@ const buttonVariants = cva(
         icon: "size-9",
       },
     },
+
     defaultVariants: {
       variant: "default",
       size: "default",
