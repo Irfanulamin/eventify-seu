@@ -2,11 +2,14 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CommonNavbar } from "@/components/common/CommonNavbar";
 import CircularText from "@/components/ui/circle_text";
+import Beams from "@/components/ui/beams";
 
 export default function Banner() {
   return (
-    <div className="bg-[url('/8.jpg')] bg-cover bg-center relative w-full h-screen overflow-hidden">
-      <div className="absolute inset-0 bg-black/80"></div>
+    <div className="relative w-full h-screen overflow-hidden">
+      <div className="absolute inset-0 bg-black/80">
+        <Beams />
+      </div>
       <CommonNavbar />
       <div className="relative flex items-center justify-center h-full">
         <div className="text-center text-white max-w-4xl px-6">
@@ -27,7 +30,7 @@ export default function Banner() {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-12 left-1/2 -translate-x-1/2 sm:left-auto sm:right-12 sm:translate-x-0">
+      <div className="hidden md:block absolute bottom-12 right-12">
         <CircularText
           text="*UNIFIED*STUDENT*JOURNEY"
           onHover="speedUp"

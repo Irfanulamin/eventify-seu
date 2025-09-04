@@ -272,7 +272,7 @@ export default function About() {
   return (
     <div
       id="about"
-      className="bg-gradient-to-b from-slate-950 via-gray-950 to-black text-white py-2 md:py-16 lg:py-32 overflow-hidden"
+      className="bg-gradient-to-b from-slate-950 via-gray-950 to-black text-white py-16 lg:py-32 overflow-hidden"
     >
       <div ref={sectionTitleRef} className="mx-auto px-4 text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance text-white">
