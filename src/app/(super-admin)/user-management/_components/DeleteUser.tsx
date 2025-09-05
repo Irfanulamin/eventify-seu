@@ -33,7 +33,7 @@ export default function DeleteUserDialog({
     setLoading(true);
     try {
       const res = await axios.delete(
-        `http://localhost:5000/api/users/delete/${userId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/delete/${userId}`
       );
       if (res.data?.success) {
         toast.success("User deleted successfully");

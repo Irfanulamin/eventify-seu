@@ -37,7 +37,7 @@ export default function DeleteClubDialog({
       setLoading(true);
 
       await axios.delete(
-        `http://localhost:5000/api/clubs/delete/${clubData._id}`
+        `${process.env.NEXT_PUBLIC_API_URL}/api/clubs/delete/${clubData._id}`
       );
 
       toast.success(`${clubData.name} has been deleted.`);

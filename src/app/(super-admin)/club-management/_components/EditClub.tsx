@@ -100,7 +100,7 @@ export default function EditClubForm({
       }
 
       await axios.patch(
-        `http://localhost:5000/api/clubs/update/${clubData._id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/clubs/update/${clubData._id}`,
         formData,
         {
           headers: {

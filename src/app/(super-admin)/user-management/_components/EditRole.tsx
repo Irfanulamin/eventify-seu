@@ -45,10 +45,13 @@ export default function EditUserDialog({
   const onSubmit = async (data: FormValues) => {
     setLoading(true);
     try {
-      await axios.patch(`http://localhost:5000/api/users/${user._id}/role`, {
-        userId: user._id,
-        role: data.role,
-      });
+      await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/${user._id}/role`,
+        {
+          userId: user._id,
+          role: data.role,
+        }
+      );
       toast.success("Role has been updated successfully!");
       onRoleUpdated();
       setOpen(false);

@@ -14,7 +14,7 @@ interface User {
   username: string;
   email: string;
   role?: string;
-  [key: string]: any; // Allow for additional user properties
+  [key: string]: any;
 }
 
 interface AuthContextType {
@@ -34,7 +34,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
 });
 

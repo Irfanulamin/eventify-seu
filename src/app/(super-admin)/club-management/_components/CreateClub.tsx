@@ -91,11 +91,15 @@ export default function CreateClubForm({
         formData.append("image", selectedFile);
       }
 
-      await axios.post("http://localhost:5000/api/clubs/", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/clubs/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       toast.success("Club created successfully!");
       reset();

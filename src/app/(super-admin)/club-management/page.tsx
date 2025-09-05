@@ -16,7 +16,7 @@ interface Club {
 
 async function getClubs(): Promise<Club[]> {
   try {
-    const res = await fetch("http://localhost:5000/api/clubs/", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/clubs/`, {
       cache: "no-store",
     });
     const data = await res.json();

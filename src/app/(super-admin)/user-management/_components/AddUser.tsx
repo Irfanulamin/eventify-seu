@@ -99,7 +99,7 @@ export default function AddUserForm({ onUserCreated }: AddUserFormProps) {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/create-user",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/users/create-user`,
         data
       );
 
