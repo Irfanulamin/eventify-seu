@@ -5,6 +5,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { Calendar, Edit, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import EditEventForm from "./_components/EditPosts";
+import DeletePost from "./_components/DeletePost";
 
 export default function EventPageEditDeletePage() {
   const { user } = useAuth();
@@ -53,93 +55,97 @@ export default function EventPageEditDeletePage() {
     });
   };
   return (
-    <div>
-      <button
-        onClick={fetchEvents}
-        className="mb-4 p-2 bg-blue-500 text-white rounded"
-      >
-        Refresh
-      </button>
+    <div className="px-2">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {events.map((event) => (
+          <Card
+            key={event._id}
+            className="flex flex-col w-full overflow-hidden rounded-2xl shadow-sm border transition"
+          >
+            {/* Card Header */}
+            <CardHeader className="pb-3 border-b bg-muted/30">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src={event.club.imageUrl || "/placeholder.svg"}
+                    alt={event.club.name}
+                    width={48}
+                    height={48}
+                    className="rounded-full object-cover border"
+                  />
+                  <div>
+                    <h3 className="font-semibold text-lg line-clamp-1">
+                      {event.name}
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-1">
+                      {event.club.name}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex">
+                  <EditEventForm event={event} onSuccess={fetchEvents} />
 
-      {events.map((event) => (
-        <Card key={event._id} className="w-full max-w-2xl mx-auto">
-          <CardHeader className="pb-4">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <Image
-                  src={event.club.imageUrl || "/placeholder.svg"}
-                  alt={event.club.name}
-                  width={48}
-                  height={48}
-                  className="rounded-full object-cover"
-                />
-                <div>
-                  <h3 className="font-semibold text-lg">{event.name}</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {event.club.name}
-                  </p>
+                  <DeletePost event={event} onSuccess={fetchEvents} />
                 </div>
               </div>
-              <div className="flex gap-2">
-                <Button variant="ghost" size="sm" className="p-2">
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="p-2 text-destructive"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+            </CardHeader>
+
+            {/* Card Content */}
+            <CardContent className="flex flex-col flex-1 p-4">
+              {/* Main Content Wrapper */}
+              <div className="flex flex-col flex-1 space-y-4">
+                {/* Event Image */}
+                <div className="relative w-full h-48 sm:h-56 md:h-40 lg:h-44 xl:h-52 rounded-lg overflow-hidden">
+                  <Image
+                    src={event.imageUrl || "/placeholder.svg"}
+                    alt={event.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+
+                {/* Event Date */}
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <Calendar className="h-4 w-4" />
+                  <span>{formatDate(event.date)}</span>
+                </div>
+
+                {/* Event Description */}
+                <p className="text-sm leading-relaxed line-clamp-3">
+                  {event.description}
+                </p>
+
+                {/* Action Buttons */}
+                {event.buttons.length > 0 && (
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {event.buttons.map((button: any) => (
+                      <Button
+                        key={button._id}
+                        variant="secondary"
+                        size="sm"
+                        asChild
+                        className="rounded-full"
+                      >
+                        <a
+                          href={button.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          {button.label}
+                        </a>
+                      </Button>
+                    ))}
+                  </div>
+                )}
               </div>
-            </div>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            {/* Event Image */}
-            <div className="relative w-full h-64 rounded-lg overflow-hidden">
-              <Image
-                src={event.imageUrl || "/placeholder.svg"}
-                alt={event.name}
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            {/* Event Date */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Calendar className="h-4 w-4" />
-              <span>{formatDate(event.date)}</span>
-            </div>
-
-            {/* Event Description */}
-            <p className="text-sm leading-relaxed">{event.description}</p>
-
-            {/* Action Buttons */}
-            {event.buttons.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {event.buttons.map((button: any) => (
-                  <Button key={button._id} variant="default" size="sm" asChild>
-                    <a
-                      href={button.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {button.label}
-                    </a>
-                  </Button>
-                ))}
+              <div className="mt-auto flex items-end justify-end pt-4 text-xs text-muted-foreground space-x-2">
+                <span>By {event.createdBy.username}</span>
+                <span>{new Date(event.createdAt).toLocaleDateString()}</span>
               </div>
-            )}
-
-            {/* Event Meta */}
-            <div className="flex items-center justify-between pt-4 border-t text-xs text-muted-foreground">
-              <span>By {event.createdBy.username}</span>
-              <span>{new Date(event.createdAt).toLocaleDateString()}</span>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

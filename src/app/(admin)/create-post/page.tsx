@@ -82,10 +82,10 @@ export default function CreateEventForm() {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/clubs`
         );
-        if (response.data.success) setClubs(response.data.data.clubs);
+        if (response.data.success) {
+          setClubs(response.data.data.clubs);
+        }
       } catch (err) {
-        console.error(err);
-        toast.error("Failed to load clubs. Please refresh.");
       } finally {
         setIsLoadingClubs(false);
       }
