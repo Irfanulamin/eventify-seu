@@ -6,8 +6,8 @@ import Beams from "@/components/ui/beams";
 
 export default function Banner() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <div className="absolute inset-0 bg-black/80">
+    <div className="relative w-full h-screen overflow-hidden bg-slate-950">
+      <div className="absolute inset-0">
         <Beams
           beamWidth={2}
           beamHeight={18}

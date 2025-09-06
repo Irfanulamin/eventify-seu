@@ -6,9 +6,9 @@ import React from "react";
 export default function Footer() {
   return (
     <div className="w-full bg-gradient-to-b from-black to-gray-900">
-      <div className="py-6 md:py-12">
+      <div className="hidden md:block py-6 md:py-12">
         <ScrollVelocity
-          texts={["Eventiy SEU", "SEU Eventiy"]}
+          texts={["Eventify SEU", "SEU Eventify"]}
           className="text-white"
         />
       </div>

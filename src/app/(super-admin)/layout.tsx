@@ -60,8 +60,7 @@ export default function SuperAdminLayout({
               Eventify SEU
             </h1>
           </div>
-          <div className="hidden md:block">
-            {" "}
+          <div className="hidden lg:block">
             <Button
               variant="destructive"
               className="hover:bg-red-700 duration-100 transition"
