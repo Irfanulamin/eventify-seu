@@ -109,15 +109,8 @@ export default function AllPostsPage() {
                   event.buttons.map((button, index) => (
                     <Button
                       key={button._id}
-                      variant={index === 0 ? "default" : "outline"}
-                      className={`
-                    ${
-                      index === 0
-                        ? "bg-black text-white hover:text-black"
-                        : "border-foreground text-foreground"
-                    }
-                    text-sm
-                  `}
+                      variant="default"
+                      className="hover:bg-black bg-blue-500 text-sm text-white p-1 px-2"
                       asChild
                     >
                       <a

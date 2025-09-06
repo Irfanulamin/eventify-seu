@@ -119,10 +119,13 @@ export default function EditEventSheet({ event, onSuccess }: EditEventProps) {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${event._id}`, {
-        method: "PATCH",
-        body: formData,
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/events/${event._id}`,
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
 
       const result = await res.json();
       if (result.success) {
@@ -144,138 +147,149 @@ export default function EditEventSheet({ event, onSuccess }: EditEventProps) {
           <Edit className="w-4 h-4" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full sm:max-w-lg">
-        <SheetHeader>
+
+      <SheetContent
+        side="right"
+        className="w-full sm:max-w-lg p-0 flex flex-col"
+      >
+        {/* Header */}
+        <SheetHeader className="p-6 border-b">
           <SheetTitle>Edit Event</SheetTitle>
           <SheetDescription>
             Update event details, image, and action buttons.
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 p-6">
-          <div className="space-y-4">
-            <div>
-              <Label className="mb-1 font-semibold" htmlFor="name">
-                Event Name
-              </Label>
-              <Input
-                id="name"
-                {...register("name")}
-                placeholder="Enter event name"
-                required
-              />
-            </div>
-
-            <div>
-              <Label className="mb-1 font-semibold" htmlFor="description">
-                Description
-              </Label>
-              <Textarea
-                id="description"
-                {...register("description")}
-                placeholder="Describe your event"
-                rows={3}
-                required
-              />
-            </div>
-
-            <div>
-              <Label className="mb-1 font-semibold" htmlFor="date">
-                Date & Time
-              </Label>
-              <Input
-                id="date"
-                {...register("date")}
-                type="datetime-local"
-                required
-              />
-            </div>
-          </div>
-
-          <div>
-            <Label className="mb-1 font-semibold">Event Image</Label>
-            <div
-              onDrop={handleDrop}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              className={`
-                relative border-2 border-dashed rounded-lg text-center transition-colors cursor-pointer mt-2
-                h-40 w-full flex items-center justify-center
-                ${
-                  isDragOver
-                    ? "border-primary bg-primary/5"
-                    : "border-muted-foreground/25 hover:border-primary/50"
-                }
-              `}
-            >
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileInput}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-
-              {imagePreview ? (
-                <Image
-                  src={imagePreview || "/placeholder.svg"}
-                  alt="Preview"
-                  width={150}
-                  height={150}
-                  className="object-cover rounded-lg"
+        {/* Scrollable form content */}
+        <div className="flex-1 overflow-y-auto px-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 py-6">
+            <div className="space-y-4">
+              <div>
+                <Label className="mb-1 font-semibold" htmlFor="name">
+                  Event Name
+                </Label>
+                <Input
+                  id="name"
+                  {...register("name")}
+                  placeholder="Enter event name"
+                  required
                 />
-              ) : (
-                <div className="flex flex-col items-center gap-2">
-                  <Upload className="h-8 w-8 text-muted-foreground" />
-                  <p className="text-sm">
-                    {isDragOver ? "Drop image here" : "Click or drag image"}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
+              </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-3">
-              <Label className="mb-1 font-semibold">Action Buttons</Label>
-              <Button
-                type="button"
-                variant="outline"
-                className="text-black border border-gray-400 rounded-md hover:text-black hover:border-gray-200"
-                onClick={() => append({ label: "", url: "" })}
+              <div>
+                <Label className="mb-1 font-semibold" htmlFor="description">
+                  Description
+                </Label>
+                <Textarea
+                  id="description"
+                  {...register("description")}
+                  placeholder="Describe your event"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div>
+                <Label className="mb-1 font-semibold" htmlFor="date">
+                  Date & Time
+                </Label>
+                <Input
+                  id="date"
+                  {...register("date")}
+                  type="datetime-local"
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Image Upload */}
+            <div>
+              <Label className="mb-1 font-semibold">Event Image</Label>
+              <div
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                className={`
+              relative border-2 border-dashed rounded-lg text-center transition-colors cursor-pointer mt-2
+              h-40 w-full flex items-center justify-center
+              ${
+                isDragOver
+                  ? "border-primary bg-primary/5"
+                  : "border-muted-foreground/25 hover:border-primary/50"
+              }
+            `}
               >
-                <Plus className="h-4 w-4" />
-                Add
-              </Button>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileInput}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+
+                {imagePreview ? (
+                  <Image
+                    src={imagePreview || "/placeholder.svg"}
+                    alt="Preview"
+                    width={150}
+                    height={150}
+                    className="object-cover rounded-lg"
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-2">
+                    <Upload className="h-8 w-8 text-muted-foreground" />
+                    <p className="text-sm">
+                      {isDragOver ? "Drop image here" : "Click or drag image"}
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-3">
-              {fields.map((field, index) => (
-                <div key={field.id} className="flex gap-2">
-                  <Input
-                    {...register(`buttons.${index}.label` as const)}
-                    placeholder="Button label"
-                    className="flex-1"
-                  />
-                  <Input
-                    {...register(`buttons.${index}.url` as const)}
-                    placeholder="https://..."
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={() => remove(index)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </form>
+            {/* Action Buttons */}
+            <div>
+              <div className="flex items-center justify-between mb-3">
+                <Label className="mb-1 font-semibold">Action Buttons</Label>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="text-black border border-gray-400 rounded-md hover:text-black hover:border-gray-200"
+                  onClick={() => append({ label: "", url: "" })}
+                >
+                  <Plus className="h-4 w-4" />
+                  Add
+                </Button>
+              </div>
 
-        <SheetFooter>
+              <div className="space-y-3">
+                {fields.map((field, index) => (
+                  <div key={field.id} className="flex gap-2">
+                    <Input
+                      {...register(`buttons.${index}.label` as const)}
+                      placeholder="Button label"
+                      className="flex-1"
+                    />
+                    <Input
+                      {...register(`buttons.${index}.url` as const)}
+                      placeholder="https://..."
+                      className="flex-1"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => remove(index)}
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </form>
+        </div>
+
+        {/* Sticky Footer */}
+        <SheetFooter className="p-6 border-t">
           <Button
             type="submit"
             disabled={isSubmitting}
