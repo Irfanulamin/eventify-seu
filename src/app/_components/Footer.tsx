@@ -1,6 +1,8 @@
 "use client";
 
 import ScrollVelocity from "@/components/ui/seamless_text";
+import { MoveUp } from "lucide-react";
+import Link from "next/link";
 import React from "react";
 
 export default function Footer() {
@@ -20,9 +22,17 @@ export default function Footer() {
             it easy for students to stay connected and participate.
           </p>
         </div>
-        <p className="mt-6 md:mt-0 text-sm text-center md:text-left w-full md:w-auto">
-          &copy; {new Date().getFullYear()} Eventify SEU. All rights reserved.
-        </p>
+        <div className="flex items-center gap-4 flex-col md:flex-row">
+          <p className="mt-6 md:mt-0 text-sm text-center md:text-left w-full md:w-auto">
+            &copy; {new Date().getFullYear()} Eventify SEU. All rights reserved.
+          </p>
+          <Link
+            href="#banner"
+            className="p-2 rounded-full border border-white cursor-pointer hover:scale-110 transition-transform"
+          >
+            <MoveUp className="w-4 h-4" />
+          </Link>
+        </div>
       </div>
     </div>
   );

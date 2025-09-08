@@ -5,25 +5,35 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "transition duration-300 cursor-pointer inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
+  "inline-flex items-center justify-center gap-2 shrink-0 whitespace-nowrap rounded-full font-medium outline-none " +
+    "transition-all duration-300 cursor-pointer disabled:pointer-events-none disabled:opacity-50 " +
+    "focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring " +
+    "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 " +
+    "[&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default:
-          "bg-white text-black hover:bg-white/90 transition-all duration-300 p-8 rounded-full font-normal text-lg",
+        default: "bg-white text-black hover:bg-white/90 font-normal text-lg",
 
         primary:
-          "border-2 border-primary text-primary bg-gray-200 hover:bg-primary/10 hover:border-primary hover:text-primary hover:shadow-[0_0_40px_theme(colors.primary/50)] active:shadow-[0_0_60px_theme(colors.primary/70)] transition-all duration-300 p-6 rounded-full font-medium",
+          "border-2 border-primary text-primary bg-gray-200 hover:bg-primary/10 " +
+          "hover:shadow-[0_0_40px_theme(colors.primary/50)] active:shadow-[0_0_60px_theme(colors.primary/70)]",
 
-        glow: "p-8 rounded-full font-normal text-lg bg-white text-black border border-white/50 hover:border-white hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] active:shadow-[0_0_60px_rgba(255,255,255,0.8)] transition-all duration-300 p-6 rounded-full",
+        glow:
+          "bg-white text-black border border-white/50 hover:border-white " +
+          "hover:shadow-[0_0_40px_rgba(255,255,255,0.6)] active:shadow-[0_0_60px_rgba(255,255,255,0.8)]",
 
         outline:
-          "bg-transparent text-gray-300 border border-gray-500/30 hover:bg-gray-700/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 rounded-full transition-all duration-300",
+          "bg-transparent text-gray-300 border border-gray-500/30 hover:bg-gray-700/30 " +
+          "hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)]",
+
         outline_glow:
-          "p-8 font-normal text-lg bg-transparent text-gray-300 border border-white hover:bg-gray-700/30 hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)] p-6 rounded-full transition-all duration-300",
+          "bg-transparent text-gray-300 border border-white hover:bg-gray-700/30 " +
+          "hover:shadow-[0_0_30px_rgba(255,255,255,0.2)] active:shadow-[0_0_40px_rgba(255,255,255,0.3)]",
 
         destructive:
-          "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+          "bg-destructive text-white hover:bg-destructive/90 shadow-xs " +
+          "focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
 
         secondary:
           "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/80",
@@ -35,10 +45,10 @@ const buttonVariants = cva(
       },
 
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-md gap-1.5 px-3 has-[>svg]:px-2.5",
-        lg: "h-10 rounded-md px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        default: "h-11 px-6 text-base",
+        sm: "h-9 px-4 text-sm gap-1.5",
+        lg: "h-12 px-8 text-lg",
+        icon: "size-11",
       },
     },
 

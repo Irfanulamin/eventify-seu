@@ -217,26 +217,20 @@ export default function AuthPage() {
   }
 
   return (
-    <section className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-black pt-24">
-      <div className="absolute inset-0 bg-gradient-to-tl from-blue-950/80 to-slate-950/10">
-        <div className="absolute top-1/3 left-1/3 w-72 h-72 bg-blue-500/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/3 right-1/3 w-64 h-64 bg-blue-700/4 rounded-full blur-3xl" />
-      </div>
-
+    <section className="min-h-screen flex items-center justify-center p-4 overflow-hidden bg-gradient-to-b from-slate-950 via-blue-950 to-sky-950 pt-24">
       <CommonNavbar />
-
-      <div className="w-full max-w-sm relative">
+      <div className="w-full max-w-sm">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="bg-black/80 border border-blue-500/30 mb-4 w-fit rounded-xl p-0.5">
             <TabsTrigger
               value="register"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm rounded-lg px-6 py-2"
+              className="cursor-pointer data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 rounded-lg px-6 py-2"
             >
               Register
             </TabsTrigger>
             <TabsTrigger
               value="login"
-              className="data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 hover:text-white transition-all duration-200 text-sm rounded-lg px-6 py-2"
+              className="cursor-pointer data-[state=active]:bg-blue-700 data-[state=active]:text-white text-white/70 rounded-lg px-6 py-2"
             >
               Login
             </TabsTrigger>
@@ -283,16 +277,9 @@ export default function AuthPage() {
                 <Button
                   type="submit"
                   disabled={isLoading || !loginForm.formState.isValid}
-                  className="w-full bg-blue-700 hover:bg-blue-700 text-white font-medium transition-colors duration-200 rounded-xl h-11 mt-6 disabled:opacity-50"
+                  className="w-full bg-blue-700 text-white rounded-md h-10 disabled:opacity-50"
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                      Signing In...
-                    </div>
-                  ) : (
-                    "Sign In"
-                  )}
+                  {isLoading ? "Signing In..." : "Sign In"}
                 </Button>
               </form>
             </TabsContent>
@@ -309,16 +296,9 @@ export default function AuthPage() {
                 <Button
                   type="submit"
                   disabled={isLoading || !registerForm.formState.isValid}
-                  className="w-full bg-blue-700 hover:bg-blue-700 text-white font-medium transition-colors duration-200 rounded-xl h-11 mt-6 disabled:opacity-50"
+                  className="w-full bg-blue-700 text-white rounded-md h-10 disabled:opacity-50"
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                      Creating Account...
-                    </div>
-                  ) : (
-                    "Create Account"
-                  )}
+                  {isLoading ? "Creating Account..." : "Create Account"}
                 </Button>
               </form>
             </TabsContent>

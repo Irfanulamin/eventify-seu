@@ -41,7 +41,7 @@ export default function Banner() {
       </div>
       <div className="hidden md:block absolute bottom-12 right-12">
         <CircularText
-          text="*UNIFIED*STUDENT*JOURNEY"
+          text="*EVENTIFY*SEU*JOURNEY"
           onHover="speedUp"
           spinDuration={20}
           className="text-xs text-black"

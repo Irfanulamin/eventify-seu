@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -86,14 +87,12 @@ export default function About() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Defaults for ScrollTrigger animations
       const scrollDefaults = {
         start: "top 70%",
         toggleActions: "play none none reverse",
         ease: "power2.out",
       };
 
-      // Helper functions
       const fadeInUp = (el: any, delay = 0) =>
         gsap.fromTo(
           el,
@@ -121,19 +120,6 @@ export default function About() {
           }
         );
 
-      const fadeInRight = (el: any, delay = 0) =>
-        gsap.fromTo(
-          el,
-          { opacity: 0, x: -100, filter: "blur(5px)" },
-          {
-            opacity: 1,
-            x: 0,
-            filter: "blur(0px)",
-            duration: 0.5,
-            delay,
-            scrollTrigger: { ...scrollDefaults, trigger: el },
-          }
-        );
       fadeInUp(sectionTitleRef.current);
       gsap.utils.toArray(".bento-item").forEach((item: any, i) => {
         fadeInUp(item, i * 0.05);
@@ -151,7 +137,6 @@ export default function About() {
         });
       });
 
-      // Mission Section
       fadeInUp(missionTitleRef.current);
       fadeInLeft(studentFriendlyRef.current);
       fadeInLeft(seamlessAppsRef.current, 0.1);
@@ -207,7 +192,7 @@ export default function About() {
                 width={400}
                 height={400}
                 alt={item.alt}
-                className="w-full h-full object-cover transition-transform duration-300"
+                className="w-full h-full object-cover transition-transform duration-300 aspect-square"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/05 to-black/80"></div>
             </div>
@@ -293,9 +278,15 @@ export default function About() {
               Have a suggestion, feature idea, or review? Share your thoughts
               with us — your feedback helps shape the future of Eventify SEU.
             </p>
-            <Button variant="outline" className="cta-button">
-              Leave a Review
-            </Button>
+            <Link
+              href="https://forms.gle/f6PCbuLjjg5VfBCF9"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="outline" className="cta-button">
+                Leave a Review
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
