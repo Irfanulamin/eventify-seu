@@ -1,8 +1,10 @@
+"use client";
+
 import { cn } from "@/lib/utils";
-import { LogOut, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import {
   Sheet,
@@ -11,23 +13,38 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
-import { useAuth } from "@/hooks/use-auth";
+import { UserPopover } from "./UserPopover";
 
 export default function UserNavbar() {
-  const { logout } = useAuth();
+  const pathname = usePathname();
+
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
+
   const navItems = [
     { href: "/feed", label: "Feed" },
-    {
-      href: "/clubs",
-      label: "Clubs",
-    },
-    {
-      href: "/request",
-      label: "Request & Feedback",
-    },
+    { href: "/messages", label: "Messages" },
   ];
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 10) {
+        setIsVisible(true);
+      } else if (currentScrollY < lastScrollY) {
+        setIsVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   const NavLinks = ({
     mobile = false,
@@ -46,23 +63,23 @@ export default function UserNavbar() {
             href={item.href}
             onClick={onItemClick}
             className={cn(
-              "group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 relative",
+              "font-medium relative text-base transition-all duration-200 rounded-md px-3 py-1",
               mobile
                 ? cn(
-                    "w-full justify-start border border-white/10 hover:border-white/20",
+                    "w-full text-left block p-2",
                     isActive
-                      ? "bg-gradient-to-r from-white/20 to-white/10 text-white border-white/40"
-                      : "text-gray-300 hover:bg-white/10 hover:text-white"
+                      ? "bg-blue-100 text-black "
+                      : "text-gray-700 hover:bg-gray-100"
                   )
                 : cn(
-                    "backdrop-blur-md border border-white/20 hover:border-white/30",
+                    "group px-3 py-1.5 rounded-md transition-colors duration-200",
                     isActive
-                      ? "bg-gradient-to-r from-blue-400/30 to-blue-700/20 text-white border-blue-900/50"
-                      : "text-white/90 hover:bg-white/15 hover:text-white"
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-gray-700 hover:text-blue-500 hover:bg-gray-100"
                   )
             )}
           >
-            <span className="font-semibold">{item.label}</span>
+            {item.label}
           </Link>
         );
       })}
@@ -70,77 +87,53 @@ export default function UserNavbar() {
   );
 
   return (
-    <nav className="flex justify-between items-center p-6 mx-4 mt-4 rounded-2xl bg-slate-900 shadow border border-white/20 overflow-hidden">
-      <div>
-        <h2 className="text-2xl font-bold bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
-          Eventify SEU
-        </h2>
-        <p className="text-xs text-white/90 font-medium">
-          Connect, discover, and experience
-        </p>
-      </div>
-
-      <div className="hidden md:flex items-center gap-2">
-        <NavLinks />
-
-        <div className="ml-6 pl-6 border-l border-white/30">
-          <Button
-            onClick={() => logout()}
-            variant="destructive"
-            className="group  overflow-hidden bg-red-700 border-0 shadow-xl transition-all duration-200"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className=" font-semibold">Log Out</span>
-          </Button>
-        </div>
-      </div>
-
-      <div className="md:hidden">
-        <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <SheetTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-white hover:bg-white/20 border border-white/30 backdrop-blur-md rounded-xl transition-colors duration-200"
-            >
-              <Menu className="w-5 h-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent
-            side="right"
-            className="w-80 p-6 bg-slate-950 border-l border-white/20"
-          >
-            <SheetHeader className="pb-6">
-              <SheetTitle className="flex items-center gap-4 text-white">
+    <div
+      className={cn(
+        "sticky top-0 z-50 transition-transform duration-300 ease-out",
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      )}
+    >
+      <nav className="bg-gray-50 shadow">
+        <div className="flex justify-between items-center px-12 py-5">
+          <h2 className="text-2xl font-bold text-black">Eventify SEU</h2>
+          <div className="hidden md:flex items-center gap-6">
+            <NavLinks />
+            <UserPopover />
+          </div>
+          <div className="md:hidden">
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-gray-700 hover:bg-gray-100 rounded-full"
+                >
+                  <Menu className="w-6 h-6" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent
+                side="left"
+                className="w-72 flex flex-col justify-between p-6 bg-gradient-to-b from-white to-gray-50"
+              >
                 <div>
-                  <div className="text-lg font-bold">Eventify SEU</div>
-                  <div className="text-xs text-white/60 font-normal">
-                    Event Management
+                  <SheetHeader>
+                    <SheetTitle className="text-left text-gray-900 font-bold text-xl">
+                      Eventify SEU
+                    </SheetTitle>
+                  </SheetHeader>
+
+                  <div className="flex flex-col gap-3 mt-6">
+                    <NavLinks mobile onItemClick={() => setIsOpen(false)} />
                   </div>
                 </div>
-              </SheetTitle>
-            </SheetHeader>
-
-            <div className="flex flex-col gap-3 mt-6">
-              <NavLinks mobile onItemClick={() => setIsOpen(false)} />
-
-              <div className="mt-8 pt-6 border-t border-white/20">
-                <Button
-                  variant="destructive"
-                  className="w-full justify-start gap-3 bg-red-700 border-0 transition-colors duration-200"
-                  onClick={() => {
-                    setIsOpen(false);
-                    logout();
-                  }}
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="font-semibold">Log Out</span>
-                </Button>
-              </div>
-            </div>
-          </SheetContent>
-        </Sheet>
-      </div>
-    </nav>
+                <div className="border-t pt-4 mt-6">
+                  <UserPopover />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </nav>
+    </div>
   );
 }

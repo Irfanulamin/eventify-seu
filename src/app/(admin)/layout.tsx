@@ -1,5 +1,5 @@
 "use client";
-import { AdminNavbar } from "@/components/common/AdminNavbar";
+import { UserPopover } from "@/components/common/UserPopover";
 import { AdminSidebar } from "@/components/common/AdminSidebar";
 import { useAuth } from "@/hooks/use-auth";
 import { useRouter } from "next/navigation";
@@ -25,7 +25,7 @@ export default function AdminLayout({
     <div className="min-h-screen bg-background">
       <AdminSidebar />
       <div className="md:ml-64">
-        <AdminNavbar />
+        <UserPopover />
         <main className="p-6">{children}</main>
       </div>
     </div>
