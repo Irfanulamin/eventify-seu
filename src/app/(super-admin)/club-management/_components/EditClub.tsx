@@ -122,7 +122,7 @@ export default function EditClubForm({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button className="flex-1 border-slate-950 rounded-md border hover:bg-gray-200">
+        <Button variant="info" className="flex-1">
           Edit <Edit className="w-4 h-4" />
         </Button>
       </SheetTrigger>
@@ -135,7 +135,6 @@ export default function EditClubForm({
         </SheetHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6 px-6">
-          {/* Name */}
           <div className="space-y-2">
             <Label htmlFor="name">Club Name</Label>
             <Input
@@ -149,8 +148,6 @@ export default function EditClubForm({
               <p className="text-xs text-destructive">{errors.name.message}</p>
             )}
           </div>
-
-          {/* Description */}
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
@@ -167,8 +164,6 @@ export default function EditClubForm({
               </p>
             )}
           </div>
-
-          {/* Facebook Link */}
           <div className="space-y-2">
             <Label htmlFor="fbLink">Facebook Link</Label>
             <Input
@@ -187,8 +182,6 @@ export default function EditClubForm({
               </p>
             )}
           </div>
-
-          {/* Image Upload */}
           <div className="space-y-2">
             <Label>Club Image (optional)</Label>
             {!selectedFile ? (

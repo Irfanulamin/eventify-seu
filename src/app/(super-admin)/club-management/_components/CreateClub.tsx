@@ -117,10 +117,7 @@ export default function CreateClubForm({
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button
-          variant="outline"
-          className="gap-2 text-black border border-gray-400 rounded-md hover:text-black hover:border-gray-200"
-        >
+        <Button variant="info" size="sm">
           <PlusIcon className="h-4 w-4" />
           Create Club
         </Button>

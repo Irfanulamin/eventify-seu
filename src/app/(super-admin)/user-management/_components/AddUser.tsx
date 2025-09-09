@@ -87,7 +87,7 @@ const registerFields: FieldConfig[] = [
 const roles = ["user", "admin", "super-admin"];
 
 export default function AddUserForm({ onUserCreated }: AddUserFormProps) {
-  const [open, setOpen] = useState(false); // control sheet open/close
+  const [open, setOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -119,7 +119,7 @@ export default function AddUserForm({ onUserCreated }: AddUserFormProps) {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button className="text-white w-full md:w-auto bg-blue-950 hover:bg-blue-900 transition duration-300 flex items-center gap-2 rounded-md">
+        <Button size="sm" variant="info">
           <Plus className="w-4 h-4" /> Add User
         </Button>
       </SheetTrigger>
@@ -151,8 +151,6 @@ export default function AddUserForm({ onUserCreated }: AddUserFormProps) {
               )}
             </div>
           ))}
-
-          {/* Role Radio Group */}
           <div className="flex flex-col space-y-2 mb-4">
             <Label className="text-black font-medium text-sm mb-1">Role</Label>
             <Controller

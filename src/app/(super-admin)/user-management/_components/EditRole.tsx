@@ -65,7 +65,7 @@ export default function EditUserDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="bg-slate-200 hover:bg-slate-300 text-blue-950 p-2 border border-blue-950/50 inline-block rounded-md">
+        <div className="bg-gray-100 hover:bg-gray-200 text-slate-950 p-2 inline-block rounded-md cursor-pointer transition-all duration-200">
           <Edit2Icon className="w-4 h-4" />
         </div>
       </DialogTrigger>
@@ -136,7 +136,7 @@ export default function EditUserDialog({
           <DialogFooter>
             <Button
               type="submit"
-              className="text-white bg-blue-950 hover:bg-blue-900 duration-300 transition w-full rounded-md"
+              className="text-white uppercase font-semibold tracking-wider bg-blue-950 hover:bg-blue-900 duration-300 transition w-full rounded-md"
               disabled={loading}
             >
               {loading ? "Updating..." : "Update Role"}

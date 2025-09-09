@@ -12,7 +12,6 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
 
 interface NavItem {
   id: string;
@@ -57,7 +56,6 @@ export function SidebarContent({
   onMobileClose?: () => void;
 }) {
   const pathname = usePathname();
-  const { user } = useAuth();
 
   const handleItemClick = (itemId: string) => {
     onItemClick?.(itemId);
@@ -92,7 +90,6 @@ export function SidebarContent({
         )}
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         {defaultNavItems.map((item) => {
           const Icon = item.icon;
@@ -105,7 +102,7 @@ export function SidebarContent({
                 className={cn(
                   "w-full flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 group relative",
                   isActive
-                    ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25"
+                    ? "bg-blue-500 text-white shadow-md shadow-blue-500/25"
                     : "text-blue-700 dark:text-blue-300 hover:bg-blue-200/70 dark:hover:bg-blue-800/50",
                   !isMobile && isCollapsed && "justify-center px-2"
                 )}
@@ -136,8 +133,6 @@ export function SidebarContent({
                     )}
                   </>
                 )}
-
-                {/* Tooltip for collapsed state - only on desktop */}
                 {!isMobile && isCollapsed && (
                   <div className="absolute left-full ml-2 px-2 py-1 bg-blue-900 dark:bg-blue-100 text-white dark:text-blue-900 text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-50">
                     {item.label}
@@ -153,36 +148,11 @@ export function SidebarContent({
           );
         })}
       </nav>
-
-      {/* Footer */}
-      <div className="p-4 border-t border-blue-200 dark:border-blue-800">
-        {!isCollapsed || isMobile ? (
-          <div className="flex items-center space-x-3 p-3 rounded-xl bg-blue-100 dark:bg-blue-900/50">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">JD</span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-blue-900 dark:text-blue-100 truncate">
-                {user?.username || "Admin"}
-              </p>
-              <p className="text-xs text-blue-600 dark:text-blue-400 truncate">
-                {user?.email || "admin@test.com"}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="flex justify-center">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">A</span>
-            </div>
-          </div>
-        )}
-      </div>
     </>
   );
 }
 
-export function DashboardSidebar({
+export function SuperAdminSidebar({
   onItemClick,
   className,
 }: DashboardSidebarProps) {

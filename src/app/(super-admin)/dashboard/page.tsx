@@ -325,16 +325,12 @@ export default function Dashboard() {
                 </p>
               </header>
               <div className="p-4 sm:p-6 space-y-2 sm:space-y-3">
-                {" "}
-                {/* Reduced padding and spacing on mobile */}
                 {topClubs.slice(0, 5).map((club, index) => (
                   <div
                     key={club.name}
                     className="flex items-center justify-between p-2 sm:p-3 rounded-xl bg-blue-100/30 dark:bg-gray-800 odd:bg-blue-400/20" // Reduced padding on mobile
                   >
                     <div className="flex items-center space-x-2 sm:space-x-3">
-                      {" "}
-                      {/* Reduced spacing on mobile */}
                       <div
                         className={` ${
                           index === 0
@@ -392,12 +388,11 @@ export default function Dashboard() {
                         )
                       )}
                     type="radialBar"
-                    height={width < 640 ? 250 : 350} // Responsive height
+                    height={width < 640 ? 250 : 350}
                   />
                 )}
               </div>
             </section>
-            {/* Activity Distribution Section */}
             <section className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow rounded-2xl overflow-hidden">
               <header className="border-b border-gray-200 dark:border-gray-800 py-3 sm:py-4 px-4 sm:px-6">
                 <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 dark:text-gray-100">

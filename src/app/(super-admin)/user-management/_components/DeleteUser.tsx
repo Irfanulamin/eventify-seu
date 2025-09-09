@@ -52,7 +52,7 @@ export default function DeleteUserDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <div className="bg-slate-200 hover:bg-slate-300 text-blue-950 p-2 border border-blue-950/50 rounded-md">
+        <div className="bg-gray-100 hover:bg-gray-200 text-slate-950 p-2 inline-block rounded-md cursor-pointer transition-all duration-200">
           <Trash2Icon className="w-4 h-4" />
         </div>
       </DialogTrigger>
@@ -72,12 +72,11 @@ export default function DeleteUserDialog({
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="flex justify-end gap-4">
-          <DialogClose className="text-black text-sm hover:text-black cursor-pointer border-0">
+          <DialogClose className="text-black text-sm hover:text-black/50 cursor-pointer border-0 transition-all duration-200">
             Cancel
           </DialogClose>
           <Button
             variant="destructive"
-            className="hover:bg-red-700 duration-100 transition"
             onClick={handleDelete}
             disabled={loading}
           >

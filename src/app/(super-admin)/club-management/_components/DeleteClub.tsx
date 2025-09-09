@@ -53,7 +53,7 @@ export default function DeleteClubDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button className="flex-1 border-slate-950 rounded-md border hover:bg-gray-200">
+        <Button variant="outline" className="flex-1">
           Delete <Trash2 className="w-4 h-4" />
         </Button>
       </DialogTrigger>
@@ -76,16 +76,14 @@ export default function DeleteClubDialog({
           <DialogClose
             onClick={() => setOpen(false)}
             disabled={loading}
-            className="text-black text-sm hover:text-black cursor-pointer border-0"
+            className="text-black text-sm hover:text-black/50 cursor-pointer border-0 transition-all duration-200"
           >
             Cancel
           </DialogClose>
           <Button
-            type="button"
             variant="destructive"
             onClick={handleDelete}
             disabled={loading}
-            className="hover:bg-red-700 duration-100 transition"
           >
             {loading ? "Deleting..." : "Delete"}
           </Button>

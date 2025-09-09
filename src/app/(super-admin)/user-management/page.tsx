@@ -145,20 +145,22 @@ export default function UserManagement() {
                 filteredUsers.map((u) => (
                   <TableRow
                     key={u._id}
-                    className="bg-blue-50 odd:bg-blue-50/50 border-0"
+                    className="bg-slate-100 odd:bg-slate-50 border-0 hover:bg-gray-200 transition-all duration-300"
                   >
-                    <TableCell className="font-medium">{u.username}</TableCell>
+                    <TableCell className="font-medium text-base">
+                      @{u.username}
+                    </TableCell>
                     <TableCell>
-                      <div className="text-xs bg-blue-500 text-white rounded-full inline-block py-1 px-2 max-w-[200px] truncate">
+                      <div className="text-sm bg-blue-500 text-white rounded-full inline-block py-1 px-2 max-w-[200px] truncate">
                         {u.email}
                       </div>
                     </TableCell>
                     <TableCell>
-                      <span className="text-xs bg-blue-950 py-1 px-2 text-white rounded-full uppercase">
+                      <span className="text-sm bg-blue-950 py-1 px-2 text-white rounded-full uppercase">
                         {u.role.replace("-", " ")}
                       </span>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell text-blue-950 font-medium">
+                    <TableCell className="hidden md:table-cell text-blue-950 font-medium text-sm">
                       {formatDate(u.createdAt)}
                     </TableCell>
                     <TableCell>
